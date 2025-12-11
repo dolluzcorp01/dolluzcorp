@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import Login from "./Login";
+import Home from "./Home";
 
 function App() {
+  const [navSize, setNavSize] = useState("full");
+  const location = useLocation();
+
+  const path = location.pathname.toLowerCase();
+  const shouldHideNavbar = path === "/login" || path === "/thank-you";
+
+  // ✅ Optional: force scroll to top on route change (helps prevent UI glitches)
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {/* ✅ Render Login & Thank You separately */}
+      {shouldHideNavbar ? (
+        <Routes>
+          <Route path="/" element={<Navigate to="/Login" />} />
+          <Route path="/Login" element={<Login />} />
+        </Routes>
+      ) : (
+        // ✅ Main layout only for logged-in sections
+        <div className="main-layout">
+          <div className={`main-content ${navSize}`}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/Login" />} />
+              <Route path="/Home" element={<Home navSize={navSize} />} />
+            </Routes>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
