@@ -10,11 +10,11 @@ import Banner2 from "./assets/img/help_desk.png";
 import Banner3 from "./assets/img/logo_eagle.png";
 
 const apps = [
-    { name: "dTime", description: "Manage attendance, leave, shifts", url: "https://dtime.dolluzcorp.in", icon: <FaClock /> },
-    { name: "dAdmin", description: "Admin controls & configuration", url: "https://dadmin.dolluzcorp.in", icon: <FaUserCog /> },
-    { name: "dForms", description: "Dynamic form builder system", url: "https://dforms.dolluzcorp.in", icon: <FaFileAlt /> },
-    { name: "dAssist", description: "Support tickets and helpdesk", url: "https://dassist.dolluzcorp.in", icon: <FaHeadset /> },
-    { name: "dBug", description: "Bug tracking and issue management", url: "https://dbug.dolluzcorp.in", icon: <FaBug /> },
+    { name: "dAdmin", description: "Admin controls & configuration", url: "https://dadmin.dolluzcorp.in/Support_Tickets", icon: <FaUserCog /> },
+    { name: "dForms", description: "Dynamic form builder system", url: "https://dforms.dolluzcorp.in/home", icon: <FaFileAlt /> },
+    { name: "dAssist", description: "Support tickets and helpdesk", url: "https://dassist.dolluzcorp.in/Tickets", icon: <FaHeadset /> },
+    { name: "dBug", description: "Bug tracking and issue management", url: "https://dbug.dolluzcorp.in/Tickets", icon: <FaBug /> },
+    { name: "dTime", description: "Manage attendance, leave, shifts", url: "https://dtime.dolluzcorp.in/Timesheet_entry", icon: <FaClock /> },
 ];
 
 const updates = [
