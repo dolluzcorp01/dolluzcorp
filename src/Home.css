@@ -27,6 +27,50 @@
     margin-bottom: 10px;
 }
 
+/* HEADER CENTER BRAND */
+.header-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.brand-text {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    background: linear-gradient(270deg,
+            #4b7bff,
+            #ff5c8a,
+            #7a5cff);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: brandGlow 6s ease infinite;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    cursor: default;
+}
+
+.brand-text span {
+    color: #222;
+    -webkit-text-fill-color: #222;
+    margin-left: 2px;
+}
+
+/* Gradient animation */
+@keyframes brandGlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .header-right {
     display: flex;
     align-items: center;
@@ -318,4 +362,43 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* POLICIES */
+.policies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.policy-card {
+    padding: 25px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #E0F2FE, #BAE6FD);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    transition: 0.25s;
+}
+
+.policy-card:hover {
+    transform: translateY(-6px);
+}
+
+/* AWARDS */
+.awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.award-card {
+    padding: 25px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #FFF7ED, #FED7AA);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    transition: 0.25s;
+}
+
+.award-card:hover {
+    transform: translateY(-6px);
 }

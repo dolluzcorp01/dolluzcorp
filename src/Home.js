@@ -22,6 +22,35 @@ const updates = [
     { title: "Security Patch", desc: "Improved login system", date: "Dec 2025" },
     { title: "New UI Update", desc: "dAssist dashboard revamped", date: "Nov 2025" }
 ];
+const policies = [
+    {
+        title: "Information Security Policy",
+        desc: "Ensuring confidentiality, integrity, and availability of all systems."
+    },
+    {
+        title: "Employee Code of Conduct",
+        desc: "Guidelines to maintain professionalism and ethical behavior."
+    },
+    {
+        title: "Data Privacy Policy",
+        desc: "Protecting user and organizational data across platforms."
+    }
+];
+
+const awards = [
+    {
+        title: "Best Innovation Award 2024",
+        desc: "Recognized for building scalable enterprise solutions."
+    },
+    {
+        title: "Excellence in Automation",
+        desc: "Awarded for workflow and productivity automation."
+    },
+    {
+        title: "Customer Satisfaction Award",
+        desc: "Honored for outstanding client support services."
+    }
+];
 
 const blogs = [
     {
@@ -84,11 +113,20 @@ const Home = () => {
                     <FaHome className="header-icon" />
                 </div>
 
-                <div className="header-right">
-                    <FaBell className="header-icon" onClick={() => setShowNotifications(!showNotifications)} />
+                {/* CENTER BRAND */}
+                <div className="header-center">
+                    <span className="brand-text">DolluzCorp</span>
+                </div>
 
-                    <FaUserCircle className="header-icon"
-                        onClick={() => setShowProfileMenu(!showProfileMenu)} />
+                <div className="header-right">
+                    <FaBell
+                        className="header-icon"
+                        onClick={() => setShowNotifications(!showNotifications)}
+                    />
+                    <FaUserCircle
+                        className="header-icon"
+                        onClick={() => setShowProfileMenu(!showProfileMenu)}
+                    />
                 </div>
             </div>
 
@@ -108,15 +146,6 @@ const Home = () => {
                 </div>
             )}
 
-            {/* BANNER SLIDER */}
-            <div className="banner-slider">
-                <div className="banner-track">
-                    {[Banner1, Banner2, Banner3].map((b, i) => (
-                        <img key={i} src={b} alt="banner" className="banner-img" />
-                    ))}
-                </div>
-            </div>
-
             {/* DAPPS SECTION */}
             <h2 className="section-title">Our dApps</h2>
             <div className="apps-grid">
@@ -131,6 +160,15 @@ const Home = () => {
                 ))}
             </div>
 
+            {/* BANNER SLIDER */}
+            <div className="banner-slider">
+                <div className="banner-track">
+                    {[Banner1, Banner2, Banner3].map((b, i) => (
+                        <img key={i} src={b} alt="banner" className="banner-img" />
+                    ))}
+                </div>
+            </div>
+
             {/* UPDATES & ANNOUNCEMENTS */}
             <h2 className="section-title">Updates & Announcements</h2>
             <div className="updates-grid">
@@ -139,6 +177,17 @@ const Home = () => {
                         <h3>{u.title}</h3>
                         <p>{u.desc}</p>
                         <span>{u.date}</span>
+                    </div>
+                ))}
+            </div>
+
+            {/* Policies */}
+            <h2 className="section-title">Company Policies</h2>
+            <div className="policies-grid">
+                {policies.map((p, i) => (
+                    <div key={i} className="policy-card">
+                        <h3>{p.title}</h3>
+                        <p>{p.desc}</p>
                     </div>
                 ))}
             </div>
@@ -152,6 +201,17 @@ const Home = () => {
                         <h3>{b.title}</h3>
                         <p>{b.short}</p>
                         <button>Read More</button>
+                    </div>
+                ))}
+            </div>
+
+            {/* Awards & Recognition */}
+            <h2 className="section-title">Awards & Recognition</h2>
+            <div className="awards-grid">
+                {awards.map((a, i) => (
+                    <div key={i} className="award-card">
+                        <h3>{a.title}</h3>
+                        <p>{a.desc}</p>
                     </div>
                 ))}
             </div>
