@@ -171,12 +171,30 @@ const Home = () => {
 
             {/* UPDATES & ANNOUNCEMENTS */}
             <h2 className="section-title">Updates & Announcements</h2>
-            <div className="updates-grid">
+
+            <div className="updates-grid flip-grid">
                 {updates.map((u, i) => (
-                    <div key={i} className="update-card">
-                        <h3>{u.title}</h3>
-                        <p>{u.desc}</p>
-                        <span>{u.date}</span>
+                    <div key={i} className="flip-card">
+                        <div className="flip-inner">
+
+                            {/* FRONT */}
+                            <div className={`flip-front color-${i + 1}`}>
+                                <h3>{u.title}</h3>
+                                <p>{u.desc}</p>
+                                <span>{u.date}</span>
+                            </div>
+
+                            {/* BACK */}
+                            <div className={`flip-back color-${i + 1}`}>
+                                <h3>What’s New?</h3>
+                                <p>
+                                    Enhanced performance, better UX, and improved security
+                                    updates rolled out successfully.
+                                </p>
+                                <button className="flip-btn">Learn More</button>
+                            </div>
+
+                        </div>
                     </div>
                 ))}
             </div>
