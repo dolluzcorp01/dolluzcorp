@@ -408,67 +408,19 @@
 
 /* COLOR THEMES (MONDAY STYLE) */
 .color-1 {
-    background: linear-gradient(135deg, #FFD7D7, #FF9AA2);
+    background: #00CA72;
+    color: #323338;
 }
 
 .color-2 {
-    background: linear-gradient(135deg, #C7E8FF, #7DD3FC);
+    background: #6161ff;
+    color: white;
 }
 
 .color-3 {
-    background: linear-gradient(135deg, #E9D5FF, #C4B5FD);
-}
+    background: #ff7575;
+    color: #323338;
 
-/* BLOGS – Gradient Cards */
-.blogs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-}
-
-.blog-card {
-    padding: 25px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #FFF1D0, #FFE0B5);
-    cursor: pointer;
-    transition: 0.3s;
-    text-align: left;
-}
-
-.blog-card:nth-child(2) {
-    background: linear-gradient(135deg, #D1FAFF, #A5F3FC);
-}
-
-.blog-card:hover {
-    transform: translateY(-7px) scale(1.02);
-}
-
-.blog-card button {
-    margin-top: 12px;
-    padding: 9px 16px;
-    background: #ffffffaa;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.25s;
-    font-weight: 600;
-}
-
-.blog-card button:hover {
-    background: white;
-}
-
-.fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* POLICIES */
@@ -478,34 +430,266 @@
     gap: 25px;
 }
 
+.policy-icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+}
+
+.policies-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 10px;
+}
+
+/* POLICY CARD */
 .policy-card {
-    padding: 25px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #E0F2FE, #BAE6FD);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-    transition: 0.25s;
+    position: relative;
+    padding: 32px;
+    min-height: 230px;
+    border-radius: 26px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    transition: all 0.35s ease;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Blue hover layer (Google effect) */
+.policy-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1a73e8, #4285f4);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 0;
 }
 
 .policy-card:hover {
-    transform: translateY(-6px);
+    outline: 2px solid rgba(66, 133, 244, 0.35);
 }
 
-/* AWARDS */
-.awards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
+/* Hover effect */
+.policy-card:hover::before {
+    opacity: 1;
+}
+
+.policy-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 45px rgba(26, 115, 232, 0.35);
+    border-color: transparent;
+}
+
+/* Content stays above blue layer */
+.policy-card h3,
+.policy-card p {
+    position: relative;
+    z-index: 1;
+    transition: color 0.35s ease;
+}
+
+/* Title */
+.policy-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+/* Description */
+.policy-card p {
+    font-size: 16px;
+    color: #4b5563;
+    line-height: 1.7;
+}
+
+/* Text turns white on hover */
+.policy-card:hover h3,
+.policy-card:hover p {
+    color: #ffffff;
+}
+
+/* BLOGS – Gradient Cards */
+.section-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+/* Blog Tag */
+.ai-card {
+    height: 380px;
+}
+
+/* Subtle dim effect on non-hover cards */
+.ai-track:hover .ai-card {
+    opacity: 0.4;
+}
+
+.ai-track:hover .ai-card.active {
+    opacity: 1;
+}
+
+.ai-carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 40px 0;
+}
+
+.ai-track {
+    display: flex;
+    gap: 30px;
+    transition: transform 0.4s ease-out;
+    will-change: transform;
+}
+
+.ai-card {
+    min-width: 320px;
+    height: 420px;
+    background: #0b0b0b;
+    color: #fff;
+    border-radius: 24px;
+    padding: 28px;
+    position: relative;
+    transition: all 0.35s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+    opacity: 0.65;
+}
+
+.ai-card.active {
+    transform: scale(1.08);
+    opacity: 1;
+    background: linear-gradient(135deg, #1a73e8, #4285f4);
+    box-shadow: 0 30px 70px rgba(26, 115, 232, 0.45);
+}
+
+.ai-card h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.ai-card p {
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.ai-hover-content {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.35s ease;
+}
+
+.ai-card.active .ai-hover-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ai-hover-content button {
+    margin-top: 12px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    background: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* AWARDS SECTION */
+.awards-section {
+    padding: 90px 20px;
+    background: #26484c;
+    text-align: center;
+}
+
+/* Titles */
+.cert-title {
+    font-size: 38px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.cert-subtitle {
+    font-size: 18px;
+    color: #d1d5db;
+    margin-bottom: 60px;
+}
+
+/* Logos row */
+.awards-row {
+    display: flex;
+    justify-content: center;
+    gap: 120px;
+    flex-wrap: wrap;
+}
+
+/* Each logo */
+.award-item img {
+    max-width: 220px;
+    transition: transform 0.3s ease;
+}
+
+.award-item:hover img {
+    transform: scale(1.05);
+}
+
+.award-item span {
+    margin-top: 18px;
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* BIG TEXT BELOW */
+.cert-description {
+    margin-top: 80px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cert-description p {
+    font-size: 26px;
+    line-height: 1.6;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
     margin-bottom: 40px;
 }
 
-.award-card {
-    padding: 25px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #FFF7ED, #FED7AA);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-    transition: 0.25s;
+/* BUTTON */
+.cert-btn {
+    background: #f4c430;
+    color: #000;
+    padding: 14px 34px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.award-card:hover {
-    transform: translateY(-6px);
+.cert-btn:hover {
+    background: #eab308;
+    transform: translateY(-2px);
 }

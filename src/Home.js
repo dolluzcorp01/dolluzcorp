@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import { apiFetch } from "./utils/api";
@@ -56,14 +56,44 @@ const blogs = [
     {
         id: 1,
         title: "How DolluzCorp Built dForms",
-        short: "Inside the architecture and design of the dynamic form system.",
-        full: "Full blog content will be shown in Blog Page",
+        short: "Architecture & design decisions behind our dynamic form builder.",
+        full: "A deep dive into how we designed scalable forms using React and Node.",
+        tag: "Engineering"
     },
     {
         id: 2,
-        title: "Why Automation Matters",
-        short: "The future of automated workforce solutions.",
-        full: "Full blog content will be shown in Blog Page",
+        title: "Why Automation Matters in Enterprises",
+        short: "How automation reduces cost and increases productivity.",
+        full: "We explore real-world use cases of automation inside DolluzCorp.",
+        tag: "Automation"
+    },
+    {
+        id: 3,
+        title: "Building dAssist: Helpdesk at Scale",
+        short: "Challenges faced while creating a multi-tenant support system.",
+        full: "Learn how dAssist handles thousands of tickets efficiently.",
+        tag: "Support"
+    },
+    {
+        id: 4,
+        title: "Security First: Our Auth Strategy",
+        short: "JWT, cookies, and role-based access explained.",
+        full: "Security architecture behind DolluzCorp applications.",
+        tag: "Security"
+    },
+    {
+        id: 5,
+        title: "UI/UX Decisions That Worked",
+        short: "Small UI decisions that created big impact.",
+        full: "Lessons learned from user feedback and iteration.",
+        tag: "Design"
+    },
+    {
+        id: 6,
+        title: "Scaling DolluzCorp Apps",
+        short: "From single server to scalable architecture.",
+        full: "How we optimized performance across all dApps.",
+        tag: "Scalability"
     }
 ];
 
@@ -71,6 +101,37 @@ const Home = () => {
     const navigate = useNavigate();
     const [showNotifications, setShowNotifications] = useState(false);
     const [showProfileMenu, setShowProfileMenu] = useState(false);
+    const [offset, setOffset] = useState(0);
+    const [active, setActive] = useState(null);
+    const carouselRef = useRef(null);
+    const trackRef = useRef(null);
+
+    const handleMouseMove = (e) => {
+        if (!carouselRef.current || !trackRef.current) return;
+
+        const container = carouselRef.current;
+        const track = trackRef.current;
+
+        const rect = container.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const percentage = mouseX / rect.width;
+
+        const maxScroll =
+            track.scrollWidth - container.clientWidth;
+
+        // Clamp between 0 and maxScroll
+        const translateX = -Math.min(
+            Math.max(percentage * maxScroll, 0),
+            maxScroll
+        );
+
+        setOffset(translateX);
+    };
+
+    const handleMouseLeave = () => {
+        setOffset(0);
+        setActive(null);
+    };
 
     useEffect(() => {
         fetchloginedEmployees();
@@ -199,11 +260,12 @@ const Home = () => {
                 ))}
             </div>
 
-            {/* Policies */}
             <h2 className="section-title">Company Policies</h2>
+
             <div className="policies-grid">
                 {policies.map((p, i) => (
-                    <div key={i} className="policy-card">
+                    <div className="policy-card">
+                        <div className="policy-icon">📄</div>
                         <h3>{p.title}</h3>
                         <p>{p.desc}</p>
                     </div>
@@ -212,27 +274,89 @@ const Home = () => {
 
             {/* BLOG SECTION */}
             <h2 className="section-title">Blogs</h2>
-            <div className="blogs-grid">
-                {blogs.map((b) => (
-                    <div key={b.id} className="blog-card"
-                        onClick={() => navigate(`/blog/${b.id}`)}>
-                        <h3>{b.title}</h3>
-                        <p>{b.short}</p>
-                        <button>Read More</button>
-                    </div>
-                ))}
+            <p className="section-subtitle">
+                Insights, architecture, and product stories from DolluzCorp
+            </p>
+
+            <div
+                className="ai-carousel"
+                ref={carouselRef}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+            >
+                <div
+                    className="ai-track"
+                    ref={trackRef}
+                    style={{ transform: `translateX(${offset}px)` }}
+                >
+                    {blogs.map((b, i) => (
+                        <div
+                            key={b.id}
+                            className={`ai-card ${active === i ? "active" : ""}`}
+                            onMouseEnter={() => setActive(i)}
+                            onMouseLeave={() => setActive(null)}
+                            onClick={() => navigate(`/blog/${b.id}`)}
+                        >
+                            <span className="blog-tag">{b.tag}</span>
+
+                            <h3>{b.title}</h3>
+                            <p className="blog-short">{b.short}</p>
+
+                            <div className="ai-hover-content">
+                                <p>{b.full}</p>
+                                <button>Read Blog →</button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
 
-            {/* Awards & Recognition */}
-            <h2 className="section-title">Awards & Recognition</h2>
-            <div className="awards-grid">
-                {awards.map((a, i) => (
-                    <div key={i} className="award-card">
-                        <h3>{a.title}</h3>
-                        <p>{a.desc}</p>
+            {/* Awards & Recognition / Certifications */}
+            <section className="awards-section">
+                <h2 className="cert-title">Awards & Recognition</h2>
+                <p className="cert-subtitle">Certificate of Compliance</p>
+
+                <div className="awards-row">
+                    <div className="award-item">
+                        <img
+                            src="https://www.dolluzcorp.com/wp-content/themes/dolluzcorp/images/hippa.png"
+                            alt="HIPAA Compliance"
+                        />
+                        <span>HIPAA</span>
                     </div>
-                ))}
-            </div>
+
+                    <div className="award-item">
+                        <img
+                            src="https://www.dolluzcorp.com/wp-content/themes/dolluzcorp/images/9001.png"
+                            alt="ISO 9001:2015"
+                        />
+                        <span>ISO 9001:2015</span>
+                    </div>
+
+                    <div className="award-item">
+                        <img
+                            src="https://www.dolluzcorp.com/wp-content/themes/dolluzcorp/images/27001.png"
+                            alt="ISO 27001:2013"
+                        />
+                        <span>ISO 27001:2013</span>
+                    </div>
+                </div>
+
+                {/* BIG TEXT BELOW */}
+                <div className="cert-description">
+                    <p>
+                        AT DOLLUZ CORP, WE HIRE DETAIL-ORIENTED RESOURCES WHO STRIVE TO PROVIDE
+                        OUR CLIENTS WITH THE BEST ASSISTANCE AND EXPERIENCE.
+                    </p>
+
+                    <button
+                        className="cert-btn"
+                        onClick={() => navigate("/contact")}
+                    >
+                        Contact Us
+                    </button>
+                </div>
+            </section>
 
         </div>
     );
