@@ -20,8 +20,10 @@ const apps = [
 const updates = [
     { title: "New Feature Released", desc: "dTime shift planner updated", date: "Dec 2025" },
     { title: "Security Patch", desc: "Improved login system", date: "Dec 2025" },
-    { title: "New UI Update", desc: "dAssist dashboard revamped", date: "Nov 2025" }
+    { title: "New UI Update", desc: "dAssist dashboard revamped", date: "Nov 2025" },
+    { title: "Performance Enhancement", desc: "Optimized API response times across all dApps", date: "Nov 2025" }
 ];
+
 const policies = [
     {
         title: "Information Security Policy",
@@ -34,21 +36,6 @@ const policies = [
     {
         title: "Data Privacy Policy",
         desc: "Protecting user and organizational data across platforms."
-    }
-];
-
-const awards = [
-    {
-        title: "Best Innovation Award 2024",
-        desc: "Recognized for building scalable enterprise solutions."
-    },
-    {
-        title: "Excellence in Automation",
-        desc: "Awarded for workflow and productivity automation."
-    },
-    {
-        title: "Customer Satisfaction Award",
-        desc: "Honored for outstanding client support services."
     }
 ];
 
