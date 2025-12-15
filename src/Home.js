@@ -176,130 +176,136 @@ const Home = () => {
                         onClick={() => setShowProfileMenu(!showProfileMenu)}
                     />
                 </div>
-            </div>
-
-            {/* NOTIFICATION POPUP */}
-            {showNotifications && (
-                <div className="notification-box">
-                    <p>No new notifications</p>
-                </div>
-            )}
-
-            {/* PROFILE POPUP */}
-            {showProfileMenu && (
-                <div className="profile-box">
-                    <p onClick={() => navigate("/profile")}>Profile</p>
-                    <p onClick={() => navigate("/change-password")}>Change Password</p>
-                    <p onClick={handleLogout}>Logout</p>
-                </div>
-            )}
-
-            {/* DAPPS SECTION */}
-            <h2 className="section-title">Our dApps</h2>
-            <div className="apps-grid">
-                {apps.map((app, index) => (
-                    <div key={index} className="app-card fade-in" onClick={() => window.open(app.url, "_blank")}>
-                        <div className="app-icon">{app.icon}</div>
-                        <div className="app-info">
-                            <h2>{app.name}</h2>
-                            <p>{app.description}</p>
-                        </div>
+                {/* NOTIFICATION POPUP */}
+                {showNotifications && (
+                    <div className="notification-box">
+                        <p>No new notifications</p>
                     </div>
-                ))}
+                )}
+
+                {/* PROFILE POPUP */}
+                {showProfileMenu && (
+                    <div className="profile-box">
+                        <p onClick={() => navigate("/profile")}>Profile</p>
+                        <p onClick={() => navigate("/change-password")}>Change Password</p>
+                        <p onClick={handleLogout}>Logout</p>
+                    </div>
+                )}
             </div>
 
-            {/* BANNER SLIDER */}
-            <div className="banner-slider">
-                <div className="banner-track">
-                    {[Banner1, Banner2, Banner3].map((b, i) => (
-                        <img key={i} src={b} alt="banner" className="banner-img" />
+            <section className="section section-apps">
+                {/* DAPPS SECTION */}
+                <h2 className="section-title">Our dApps</h2>
+                <div className="apps-grid">
+                    {apps.map((app, index) => (
+                        <div key={index} className="app-card fade-in" onClick={() => window.open(app.url, "_blank")}>
+                            <div className="app-icon">{app.icon}</div>
+                            <div className="app-info">
+                                <h2>{app.name}</h2>
+                                <p>{app.description}</p>
+                            </div>
+                        </div>
                     ))}
                 </div>
-            </div>
+            </section>
 
-            {/* UPDATES & ANNOUNCEMENTS */}
-            <h2 className="section-title">Updates & Announcements</h2>
+            <section className="section section-banner">
+                {/* BANNER SLIDER */}
+                <div className="banner-slider">
+                    <div className="banner-track">
+                        {[Banner1, Banner2, Banner3].map((b, i) => (
+                            <img key={i} src={b} alt="banner" className="banner-img" />
+                        ))}
+                    </div>
+                </div>
+            </section>
 
-            <div className="updates-grid flip-grid">
-                {updates.map((u, i) => (
-                    <div key={i} className="flip-card">
-                        <div className="flip-inner">
+            <section className="section section-updates">
+                {/* UPDATES & ANNOUNCEMENTS */}
+                <h2 className="section-title">Updates & Announcements</h2>
+                <div className="updates-grid flip-grid">
+                    {updates.map((u, i) => (
+                        <div key={i} className="flip-card">
+                            <div className="flip-inner">
 
-                            {/* FRONT */}
-                            <div className={`flip-front color-${i + 1}`}>
-                                <h3>{u.title}</h3>
-                                <p>{u.desc}</p>
-                                <span>{u.date}</span>
+                                {/* FRONT */}
+                                <div className={`flip-front color-${i + 1}`}>
+                                    <h3>{u.title}</h3>
+                                    <p>{u.desc}</p>
+                                    <span>{u.date}</span>
+                                </div>
+
+                                {/* BACK */}
+                                <div className={`flip-back color-${i + 1}`}>
+                                    <h3>What’s New?</h3>
+                                    <p>
+                                        Enhanced performance, better UX, and improved security
+                                        updates rolled out successfully.
+                                    </p>
+                                    <button className="flip-btn">Learn More</button>
+                                </div>
+
                             </div>
-
-                            {/* BACK */}
-                            <div className={`flip-back color-${i + 1}`}>
-                                <h3>What’s New?</h3>
-                                <p>
-                                    Enhanced performance, better UX, and improved security
-                                    updates rolled out successfully.
-                                </p>
-                                <button className="flip-btn">Learn More</button>
-                            </div>
-
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            </section>
 
-            <h2 className="section-title">Company Policies</h2>
+            <section className="section section-policies">
+                <h2 className="section-title">Company Policies</h2>
+                <div className="policies-grid">
+                    {policies.map((p, i) => (
+                        <div className="policy-card">
+                            <div className="policy-icon">📄</div>
+                            <h3>{p.title}</h3>
+                            <p>{p.desc}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
 
-            <div className="policies-grid">
-                {policies.map((p, i) => (
-                    <div className="policy-card">
-                        <div className="policy-icon">📄</div>
-                        <h3>{p.title}</h3>
-                        <p>{p.desc}</p>
-                    </div>
-                ))}
-            </div>
-
-            {/* BLOG SECTION */}
-            <h2 className="section-title">Blogs</h2>
-            <p className="section-subtitle">
-                Insights, architecture, and product stories from DolluzCorp
-            </p>
-
-            <div
-                className="ai-carousel"
-                ref={carouselRef}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-            >
+            <section className="section section-blogs">
+                {/* BLOG SECTION */}
+                <h2 className="section-title">Blogs</h2>
+                <p className="section-subtitle">
+                    Insights, architecture, and product stories from DolluzCorp
+                </p>
                 <div
-                    className="ai-track"
-                    ref={trackRef}
-                    style={{ transform: `translateX(${offset}px)` }}
+                    className="ai-carousel"
+                    ref={carouselRef}
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={handleMouseLeave}
                 >
-                    {blogs.map((b, i) => (
-                        <div
-                            key={b.id}
-                            className={`ai-card ${active === i ? "active" : ""}`}
-                            onMouseEnter={() => setActive(i)}
-                            onMouseLeave={() => setActive(null)}
-                            onClick={() => navigate(`/blog/${b.id}`)}
-                        >
-                            <span className="blog-tag">{b.tag}</span>
+                    <div
+                        className="ai-track"
+                        ref={trackRef}
+                        style={{ transform: `translateX(${offset}px)` }}
+                    >
+                        {blogs.map((b, i) => (
+                            <div
+                                key={b.id}
+                                className={`ai-card ${active === i ? "active" : ""}`}
+                                onMouseEnter={() => setActive(i)}
+                                onMouseLeave={() => setActive(null)}
+                                onClick={() => navigate(`/blog/${b.id}`)}
+                            >
+                                <span className="blog-tag">{b.tag}</span>
 
-                            <h3>{b.title}</h3>
-                            <p className="blog-short">{b.short}</p>
+                                <h3>{b.title}</h3>
+                                <p className="blog-short">{b.short}</p>
 
-                            <div className="ai-hover-content">
-                                <p>{b.full}</p>
-                                <button>Read Blog →</button>
+                                <div className="ai-hover-content">
+                                    <p>{b.full}</p>
+                                    <button>Read Blog →</button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
-            </div>
+            </section>
 
             {/* Awards & Recognition / Certifications */}
-            <section className="awards-section">
+            <section className="section awards-section">
                 <h2 className="cert-title">Awards & Recognition</h2>
                 <p className="cert-subtitle">Certificate of Compliance</p>
 
