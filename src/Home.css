@@ -3,7 +3,7 @@
     min-height: 100vh;
     padding: 80px 16px 40px;
     font-family: "Poppins", sans-serif;
-    background: #f4f6fb;
+    background: #0b1220;
     color: #0f172a;
 }
 
@@ -48,38 +48,15 @@
     padding: 40px;
 }
 
-.section-apps {
-    background: var(--grad-soft);
-    border-radius: 40px;
-    padding-top: 20px;
-}
-
-.section-banner {
-    background: var(--bg-card);
-    border-radius: 40px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
-    padding-top: 20px;
-}
-
-.section-updates {
-    background: linear-gradient(135deg, #ecfeff, #f0fdfa);
-    padding-top: 20px;
-    border-radius: 40px;
-}
-
-.section-policies {
-    background: var(--grad-soft);
-    padding-top: 20px;
-    border-radius: 40px;
-}
-
-.section-blogs {
-    background: #020617;
-    padding-top: 20px;
-    border-radius: 40px;
-}
-
+.section-apps .section-title,
+.section-banner .section-title,
+.section-updates .section-title,
+.section-policies .section-title,
 .section-blogs .section-title,
+.section-apps .section-subtitle,
+.section-banner .section-subtitle,
+.section-updates .section-subtitle,
+.section-policies .section-subtitle,
 .section-blogs .section-subtitle {
     color: #ffffff;
 }
@@ -275,7 +252,6 @@
 
 .app-card:nth-child(4) {
     background: linear-gradient(135deg, #f59e0b, #fde68a);
-    color: #1f2937;
 }
 
 .app-card:nth-child(5) {
@@ -320,11 +296,6 @@
     transition: transform 0.9s cubic-bezier(.25, .8, .25, 1);
     background: #f8fafc;
     color: #0f172a;
-}
-
-.flip-card,
-.flip-inner {
-    transform: none !important;
 }
 
 /* FLIP EFFECT – UP & DOWN */
@@ -430,9 +401,7 @@
     gap: 32px;
     max-width: 1200px;
     margin: 0 auto;
-    background: linear-gradient(135deg,
-            #f1f5f9,
-            #e0e7ff);
+    background: #0F1728;
     padding: 40px 20px;
     border-radius: 40px;
 }
