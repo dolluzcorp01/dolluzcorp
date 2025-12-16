@@ -1,11 +1,10 @@
 /* GLOBAL */
 .home-container {
     min-height: 100vh;
-    padding: 5px 15px;
+    padding: 80px 16px 40px;
     font-family: "Poppins", sans-serif;
     background: #f4f6fb;
-    background-size: 400% 400%;
-    animation: bgMove 14s infinite alternate ease-in-out;
+    color: #0f172a;
 }
 
 @keyframes bgMove {
@@ -29,7 +28,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background: linear-gradient(135deg, #020617, #0f172a);
+    box-shadow: var(--shadow-strong);
     backdrop-filter: blur(10px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
@@ -41,34 +41,41 @@
     transform: translateX(-50%);
 }
 
+.section {
+    margin: 10px auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 40px;
+}
+
 .section-apps {
-    background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+    background: var(--grad-soft);
     border-radius: 40px;
     padding-top: 20px;
 }
 
 .section-banner {
-    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    background: var(--bg-card);
     border-radius: 40px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
     padding-top: 20px;
 }
 
 .section-updates {
-    padding-top: 20px;
     background: linear-gradient(135deg, #ecfeff, #f0fdfa);
+    padding-top: 20px;
     border-radius: 40px;
 }
 
 .section-policies {
+    background: var(--grad-soft);
     padding-top: 20px;
-    background: linear-gradient(135deg, #f8fafc, #eef2ff);
     border-radius: 40px;
 }
 
 .section-blogs {
+    background: #020617;
     padding-top: 20px;
-    background: linear-gradient(135deg, #0f172a, #020617);
     border-radius: 40px;
 }
 
@@ -79,10 +86,6 @@
 
 .awards-section {
     background: linear-gradient(135deg, #020024, #090979, #00d4ff);
-}
-
-.section {
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.06);
 }
 
 .brand-text {
@@ -132,8 +135,8 @@
     font-size: 30px;
     cursor: pointer;
     padding: 8px;
-    background: linear-gradient(135deg, #ffffff, #dbeafe);
-    color: #1e3a8a;
+    background: var(--bg-card);
+    color: var(--brand-primary);
     border-radius: 50%;
     transition: 0.25s;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
@@ -141,15 +144,13 @@
 
 .header-icon:hover {
     transform: scale(1.15) rotate(5deg);
-    color: #4b7bff;
+    color: var(--brand-secondary);
 }
 
 /* TITLES */
 .section-title {
     text-align: center;
-    padding: 10px;
     padding-bottom: 15px;
-    margin: 35px 0 15px;
     font-size: 30px;
     font-weight: 800;
     color: #2a2a2a;
@@ -255,41 +256,34 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
+.app-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+}
+
 .app-card:nth-child(1) {
-    background: linear-gradient(135deg, #6EE7B7, #3B82F6);
+    background: linear-gradient(135deg, #2563eb, #60a5fa);
 }
 
 .app-card:nth-child(2) {
-    background: linear-gradient(135deg, #FCA5A5, #F43F5E);
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
 }
 
 .app-card:nth-child(3) {
-    background: linear-gradient(135deg, #A78BFA, #6366F1);
+    background: linear-gradient(135deg, #ec4899, #f9a8d4);
 }
 
 .app-card:nth-child(4) {
-    background: linear-gradient(135deg, #FDE68A, #F59E0B);
-    color: #333;
+    background: linear-gradient(135deg, #f59e0b, #fde68a);
+    color: #1f2937;
 }
 
 .app-card:nth-child(5) {
-    background: linear-gradient(135deg, #F9A8D4, #EC4899);
-}
-
-.app-card:hover {
-    transform: translateY(-6px) scale(1.04);
-    border-color: #6a50ff;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.22);
-}
-
-.app-card:hover {
-    transform: translateY(-6px) scale(1.04);
-    border-color: #6a50ff;
-    box-shadow: 0 10px 40px rgba(106, 80, 255, 0.35);
+    background: linear-gradient(135deg, #10b981, #6ee7b7);
 }
 
 .app-icon {
-    font-size: 45px;
+    font-size: 42px;
     color: white;
 }
 
@@ -324,6 +318,13 @@
     border-radius: 32px;
     transform-style: preserve-3d;
     transition: transform 0.9s cubic-bezier(.25, .8, .25, 1);
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+.flip-card,
+.flip-inner {
+    transform: none !important;
 }
 
 /* FLIP EFFECT – UP & DOWN */
@@ -385,22 +386,22 @@
 
 /* COLOR THEMES (MONDAY STYLE) */
 .color-1 {
-    background: #00c875;
-    color: #000;
+    background: #22c55e;
+    color: #052e16;
 }
 
 .color-2 {
-    background: #6161ff;
-    color: #fff;
+    background: #2563eb;
+    color: #ffffff;
 }
 
 .color-3 {
-    background: #ff7575;
-    color: #000;
+    background: #f43f5e;
+    color: #ffffff;
 }
 
 .color-4 {
-    background: #a25ddc;
+    background: #7c3aed;
     color: #ffffff;
 }
 
@@ -449,8 +450,8 @@
     padding: 42px;
     min-height: 300px;
     border-radius: 30px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
     transition: all 0.35s ease;
     cursor: pointer;
@@ -499,14 +500,14 @@
     font-size: 26px;
     margin-bottom: 16px;
     font-weight: 700;
-    color: #111827;
+    color: var(--text-dark);
 }
 
 /* Description */
 .policy-card p {
     font-size: 18px;
     line-height: 1.8;
-    color: #4b5563;
+    color: var(--text-muted);
 }
 
 /* Text turns white on hover */
@@ -524,10 +525,6 @@
 }
 
 /* Blog Tag */
-.ai-card {
-    height: 380px;
-}
-
 /* Subtle dim effect on non-hover cards */
 .ai-track:hover .ai-card {
     opacity: 0.4;
@@ -554,8 +551,9 @@
 .ai-card {
     min-width: 320px;
     height: 420px;
-    background: #0b0b0b;
-    color: #fff;
+    background: #0f172a;
+    opacity: 1;
+    color: var(--text-light);
     border-radius: 24px;
     padding: 28px;
     position: relative;
@@ -568,7 +566,7 @@
 .ai-card.active {
     transform: scale(1.08);
     opacity: 1;
-    background: linear-gradient(135deg, #1a73e8, #4285f4);
+    background: var(--grad-brand);
     box-shadow: 0 30px 70px rgba(26, 115, 232, 0.45);
 }
 
@@ -609,11 +607,8 @@
 
 /* AWARDS SECTION */
 .awards-section {
-    padding: 100px 20px;
-    background: linear-gradient(135deg,
-            #020024,
-            #090979,
-            #00d4ff);
+    background: #020617;
+    padding: 80px 20px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -689,7 +684,7 @@
 
 /* BUTTON */
 .cert-btn {
-    background: #f4c430;
+    background: var(--brand-accent);
     color: #000;
     padding: 14px 34px;
     font-size: 16px;
@@ -703,4 +698,42 @@
 .cert-btn:hover {
     background: #eab308;
     transform: translateY(-2px);
+}
+
+:root {
+    --radius-lg: 24px;
+    --radius-md: 16px;
+
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.15);
+
+    /* Brand */
+    --brand-primary: #2563eb;
+    /* Blue 600 */
+    --brand-secondary: #7c3aed;
+    /* Violet 600 */
+    --brand-accent: #ec4899;
+    /* Pink 500 */
+
+    /* Backgrounds */
+    --bg-main: #f4f6fb;
+    --bg-soft: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-dark: #020617;
+
+    /* Text */
+    --text-dark: #0f172a;
+    --text-muted: #64748b;
+    --text-light: #e5e7eb;
+    --text-white: #ffffff;
+
+    /* Borders & Shadows */
+    --border-soft: #e5e7eb;
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --shadow-strong: 0 30px 70px rgba(0, 0, 0, 0.18);
+
+    /* Gradients */
+    --grad-brand: linear-gradient(135deg, #2563eb, #7c3aed);
+    --grad-soft: linear-gradient(135deg, #eef2ff, #f8fafc);
+    --grad-dark: linear-gradient(135deg, #020617, #0f172a);
 }
