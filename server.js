@@ -6,22 +6,25 @@ const path = require("path");
 const app = express();
 const port = 4005;
 
-// ✅ Middleware for CORS - Allow specific origins
 const allowedOrigins = [
-    'http://localhost:3000',   // Allow React frontend
-    "https://dolluzcorp.in",   // Production URL 
-    'http://127.0.0.1:3000',   // Allow localhost if accessing via 127.0.0.1
-    'http://localhost:4005'    // Allow backend server origin (no trailing slash)
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:4005",
+    "https://dolluzcorp.in",
+    "https://www.dolluzcorp.in"
 ];
 
-// Enable CORS with the allowed origins and credentials
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ''))) {
-            callback(null, origin); // <-- ✅ return origin instead of true
-        } else {
-            callback(new Error('Not allowed by CORS'));
+    origin: (origin, callback) => {
+        // ✅ allow server-to-server / same-origin / health checks
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
         }
+
+        console.error("❌ Blocked by CORS:", origin);
+        return callback(new Error("Not allowed by CORS"));
     },
     credentials: true
 }));
