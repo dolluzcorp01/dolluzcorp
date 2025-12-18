@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaCamera, FaSignOutAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
-import { apiFetch } from "./utils/api";
+import { apiFetch, EMP_PROFILE_FILE_BASE } from "./utils/api";
 import { createPortal } from "react-dom";
 import help_desk from "./assets/img/help_desk.png";
 import "./ProfileHeader.css";
@@ -89,7 +89,7 @@ const ProfileHeader = ({ loggedInEmp, setLoggedInEmp }) => {
                     style={{
                         backgroundColor: loggedInEmp?.profile_color,
                         backgroundImage: loggedInEmp?.emp_profile_img
-                            ? `url(${loggedInEmp.emp_profile_img})`
+                            ? `url(${EMP_PROFILE_FILE_BASE}/${loggedInEmp.emp_profile_img.replace(/\\/g, "/")})`
                             : undefined
                     }}
                 >
@@ -108,7 +108,7 @@ const ProfileHeader = ({ loggedInEmp, setLoggedInEmp }) => {
                                         ? "transparent"
                                         : loggedInEmp?.profile_color,
                                     backgroundImage: loggedInEmp?.emp_profile_img
-                                        ? `url(${loggedInEmp.emp_profile_img})`
+                                        ? `url(${EMP_PROFILE_FILE_BASE}/${loggedInEmp.emp_profile_img.replace(/\\/g, "/")})`
                                         : undefined
                                 }}
                             >
@@ -163,7 +163,7 @@ const ProfileHeader = ({ loggedInEmp, setLoggedInEmp }) => {
                         </div>
                     </div>
                 )}
-                
+
                 {isModalOpen &&
                     createPortal(
                         <div className="profile-modal-overlay">
