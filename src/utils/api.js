@@ -3,6 +3,11 @@ export const API_BASE =
         ? process.env.REACT_APP_API
         : "http://localhost:4005";
 
+export const EMP_PROFILE_FILE_BASE =
+    process.env.NODE_ENV === "production"
+        ? process.env.REACT_APP_EMP_PROFILE_FILE
+        : "http://localhost:4000";
+
 export const DASSIST_TICKET_FILES_BASE =
     process.env.NODE_ENV === "production"
         ? process.env.REACT_APP_DASSIST_TICKET_FILES
