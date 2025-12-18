@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import ProfileHeader from "./ProfileHeader.js";
 import "./Home.css";
 import { apiFetch } from "./utils/api";
-
 import { FaHome, FaBell, FaUserCircle, FaClock, FaUserCog, FaFileAlt, FaHeadset, FaBug } from "react-icons/fa";
 
 import Banner1 from "./assets/img/DOLLUZ_CORP.png";
@@ -87,11 +87,11 @@ const blogs = [
 const Home = () => {
     const navigate = useNavigate();
     const [showNotifications, setShowNotifications] = useState(false);
-    const [showProfileMenu, setShowProfileMenu] = useState(false);
     const [offset, setOffset] = useState(0);
     const [active, setActive] = useState(null);
     const carouselRef = useRef(null);
     const trackRef = useRef(null);
+    const [loggedInEmp, setLoggedInEmp] = useState(null);
 
     const handleMouseMove = (e) => {
         if (!carouselRef.current || !trackRef.current) return;
@@ -131,7 +131,8 @@ const Home = () => {
                 credentials: 'include',
             });
             const data = await res.json();
-
+            console.log(data[0]);
+            setLoggedInEmp(data[0]);
             if (data?.message === "Access Denied. No Token Provided!" || data?.message === "Invalid Token") {
                 navigate("/login");
                 return;
@@ -171,24 +172,15 @@ const Home = () => {
                         className="header-icon"
                         onClick={() => setShowNotifications(!showNotifications)}
                     />
-                    <FaUserCircle
-                        className="header-icon"
-                        onClick={() => setShowProfileMenu(!showProfileMenu)}
+                    <ProfileHeader
+                        loggedInEmp={loggedInEmp}
+                        setLoggedInEmp={setLoggedInEmp}
                     />
                 </div>
                 {/* NOTIFICATION POPUP */}
                 {showNotifications && (
                     <div className="notification-box">
                         <p>No new notifications</p>
-                    </div>
-                )}
-
-                {/* PROFILE POPUP */}
-                {showProfileMenu && (
-                    <div className="profile-box">
-                        <p onClick={() => navigate("/profile")}>Profile</p>
-                        <p onClick={() => navigate("/change-password")}>Change Password</p>
-                        <p onClick={handleLogout}>Logout</p>
                     </div>
                 )}
             </div>
