@@ -87,7 +87,9 @@ const ProfileHeader = ({ loggedInEmp, setLoggedInEmp }) => {
                     className="profile-avatar"
                     onClick={() => setIsDropdownOpen(prev => !prev)}
                     style={{
-                        backgroundColor: loggedInEmp?.profile_color,
+                        backgroundColor: loggedInEmp?.emp_profile_img
+                            ? "transparent"
+                            : loggedInEmp?.profile_color,
                         backgroundImage: loggedInEmp?.emp_profile_img
                             ? `url(${EMP_PROFILE_FILE_BASE}/${loggedInEmp.emp_profile_img.replace(/\\/g, "/")})`
                             : undefined
