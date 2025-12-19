@@ -142,17 +142,6 @@ const Home = () => {
         }
     };
 
-    const handleLogout = async () => {
-        await apiFetch(`/api/login/logout`, {
-            method: "POST",
-            credentials: "include",
-        });
-
-        localStorage.clear();
-        sessionStorage.clear();
-        window.location.href = "/login";
-    };
-
     return (
         <div className="home-container">
 

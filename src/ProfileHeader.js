@@ -16,15 +16,7 @@ const ProfileHeader = ({ loggedInEmp, setLoggedInEmp }) => {
     const dropdownRef = useRef(null);
     const fileInputRef = useRef(null);
     const modalRef = useRef(null);
-
-    const handleLogout = async () => {
-        await apiFetch(`/api/login/logout`, {
-            method: "POST",
-            credentials: "include",
-        });
-        window.location.href = "/login";
-    };
-
+ 
     const handleCopyEmail = (email) => {
         navigator.clipboard.writeText(email)
             .then(() => {
@@ -77,6 +69,17 @@ const ProfileHeader = ({ loggedInEmp, setLoggedInEmp }) => {
         } catch {
             Swal.fire("Error", "Upload failed", "error");
         }
+    };
+
+    const handleLogout = async () => {
+        await apiFetch(`/api/login/logout`, {
+            method: "POST",
+            credentials: "include",
+        });
+
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = "/login";
     };
 
     return (
