@@ -40,12 +40,15 @@ app.use(cookieParser());
 // Routes
 const LoginRoutes = require('./src/backend_routes/Login_server');
 const EmployeeRoutes = require('./src/backend_routes/Employee_server');
+const DolluzCorpRoutes = require('./src/backend_routes/Dolluzcorp_server');
 
 app.use("/api/login", LoginRoutes.router);
 app.use("/api/employee", EmployeeRoutes);
+app.use("/api/Dolluzcorp", DolluzCorpRoutes);
 
 // Serve uploaded files if needed
 app.use('/User_profile_file_uploads', express.static(path.join(__dirname, 'User_profile_file_uploads')));
+app.use('/Dolluzcorp_banner_file_uploads', express.static(path.join(__dirname, 'Dolluzcorp_banner_file_uploads')));
 
 app.listen(port, () => {
     console.log(`🚀 Server running at http://localhost:${port}`);

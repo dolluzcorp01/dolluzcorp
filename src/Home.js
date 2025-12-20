@@ -2,12 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileHeader from "./ProfileHeader.js";
 import "./Home.css";
-import { apiFetch } from "./utils/api";
-import { FaHome, FaBell, FaUserCircle, FaClock, FaUserCog, FaFileAlt, FaHeadset, FaBug } from "react-icons/fa";
-
-import Banner1 from "./assets/img/DOLLUZ_CORP.png";
-import Banner2 from "./assets/img/help_desk.png";
-import Banner3 from "./assets/img/logo_eagle.png";
+import { apiFetch, EMP_PROFILE_FILE_BASE } from "./utils/api";
+import { FaHome, FaBell, FaClock, FaUserCog, FaFileAlt, FaHeadset, FaBug } from "react-icons/fa";
 
 const apps = [
     { name: "dAdmin", description: "Admin controls & configuration", url: "https://dadmin.dolluzcorp.in/Support_Tickets", icon: <FaUserCog /> },
@@ -92,6 +88,23 @@ const Home = () => {
     const carouselRef = useRef(null);
     const trackRef = useRef(null);
     const [loggedInEmp, setLoggedInEmp] = useState(null);
+    const [banners, setBanners] = useState([]);
+
+    useEffect(() => {
+        fetchBanners();
+    }, []);
+
+    const fetchBanners = async () => {
+        const res = await apiFetch("/api/Dolluzcorp/banner/list");
+        const data = await res.json();
+
+        if (data.success) {
+            const sorted = data.data.sort(
+                (a, b) => a.display_order - b.display_order
+            );
+            setBanners(sorted);
+        }
+    };
 
     const handleMouseMove = (e) => {
         if (!carouselRef.current || !trackRef.current) return;
@@ -191,11 +204,15 @@ const Home = () => {
             </section>
 
             <section className="section section-banner">
-                {/* BANNER SLIDER */}
                 <div className="banner-slider">
                     <div className="banner-track">
-                        {[Banner1, Banner2, Banner3].map((b, i) => (
-                            <img key={i} src={b} alt="banner" className="banner-img" />
+                        {banners.map((b) => (
+                            <img
+                                key={b.banner_id}
+                                src={`${EMP_PROFILE_FILE_BASE}/${b.banner_image.replace(/\\/g, "/")}`}
+                                alt="banner"
+                                className="banner-img"
+                            />
                         ))}
                     </div>
                 </div>

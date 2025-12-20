@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { FaCamera, FaSignOutAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { apiFetch, EMP_PROFILE_FILE_BASE } from "./utils/api";
