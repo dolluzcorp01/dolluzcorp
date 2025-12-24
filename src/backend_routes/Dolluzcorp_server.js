@@ -1,10 +1,11 @@
 const express = require("express");
-const router = express.Router(); 
+const router = express.Router();
 const { verifyJWT } = require("./Login_server");
 const getDBConnection = require("../../config/db");
 
 const db = getDBConnection("dadmin");
- 
+
+/* ---------- Banner ---------- */
 router.get("/banner/list", verifyJWT, (req, res) => {
     const q = `
         SELECT * FROM dolluzcorp_banners
@@ -16,5 +17,22 @@ router.get("/banner/list", verifyJWT, (req, res) => {
         res.json({ success: true, data: rows });
     });
 });
- 
+
+/* ---------- Updates and announcements ---------- */
+router.get("/updates/list", verifyJWT, (req, res) => {
+    const q = `
+        SELECT *
+        FROM dolluzcorp_updates
+        WHERE deleted_time IS NULL
+        ORDER BY created_time DESC
+    `;
+
+    db.query(q, (err, rows) => {
+        if (err) {
+            return res.json({ success: false, devError: err.sqlMessage });
+        }
+        res.json({ success: true, data: rows });
+    });
+});
+
 module.exports = router;

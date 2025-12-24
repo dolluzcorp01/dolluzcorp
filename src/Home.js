@@ -13,13 +13,6 @@ const apps = [
     { name: "dTime", description: "Manage attendance, leave, shifts", url: "https://dtime.dolluzcorp.in/Timesheet_entry", icon: <FaClock /> },
 ];
 
-const updates = [
-    { title: "New Feature Released", desc: "dTime shift planner updated", date: "Dec 2025" },
-    { title: "Security Patch", desc: "Improved login system", date: "Dec 2025" },
-    { title: "New UI Update", desc: "dAssist dashboard revamped", date: "Nov 2025" },
-    { title: "Performance Enhancement", desc: "Optimized API response times across all dApps", date: "Nov 2025" }
-];
-
 const policies = [
     {
         title: "Information Security Policy",
@@ -89,9 +82,45 @@ const Home = () => {
     const trackRef = useRef(null);
     const [loggedInEmp, setLoggedInEmp] = useState(null);
     const [banners, setBanners] = useState([]);
+    const [updates, setUpdates] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const ITEMS_PER_PAGE = 4;
+
+    const BASE_COLORS = ["color-1", "color-2", "color-3", "color-4"];
+
+    const shuffleArray = (arr) => {
+        const copy = [...arr];
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+    };
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const [pageColors, setPageColors] = useState(BASE_COLORS);
+
+    const totalPages = Math.ceil(updates.length / ITEMS_PER_PAGE);
+
+    const visibleUpdates = updates.slice(
+        currentPage * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE + ITEMS_PER_PAGE
+    );
+
+    const nextPage = () => {
+        setCurrentPage(prev => (prev + 1 < totalPages ? prev + 1 : prev));
+    };
+
+    const prevPage = () => {
+        setCurrentPage(prev => (prev > 0 ? prev - 1 : prev));
+    };
 
     useEffect(() => {
-        fetchBanners();
+        setPageColors(shuffleArray(BASE_COLORS));
+    }, [currentPage]);
+
+    useEffect(() => {
+        fetchBanners(); fetchUpdates();
     }, []);
 
     const fetchBanners = async () => {
@@ -103,6 +132,15 @@ const Home = () => {
                 (a, b) => a.display_order - b.display_order
             );
             setBanners(sorted);
+        }
+    };
+
+    const fetchUpdates = async () => {
+        const res = await apiFetch("/api/Dolluzcorp/updates/list");
+        const data = await res.json();
+
+        if (data.success) {
+            setUpdates(data.data);
         }
     };
 
@@ -219,33 +257,65 @@ const Home = () => {
             </section>
 
             <section className="section section-updates">
-                {/* UPDATES & ANNOUNCEMENTS */}
                 <h2 className="section-title">Updates & Announcements</h2>
+
+                {/* ARROWS — only if more than 4 updates */}
+                {updates.length > ITEMS_PER_PAGE && (
+                    <div className="updates-arrows">
+                        <button
+                            className="arrow-btn"
+                            onClick={prevPage}
+                            disabled={currentPage === 0}
+                        >
+                            ‹
+                        </button>
+
+                        <button
+                            className="arrow-btn"
+                            onClick={nextPage}
+                            disabled={currentPage === totalPages - 1}
+                        >
+                            ›
+                        </button>
+                    </div>
+                )}
+
                 <div className="updates-grid flip-grid">
-                    {updates.map((u, i) => (
-                        <div key={i} className="flip-card">
-                            <div className="flip-inner">
+                    {visibleUpdates.map((u, i) => {
+                        const colorClass = pageColors[i];
 
-                                {/* FRONT */}
-                                <div className={`flip-front color-${i + 1}`}>
-                                    <h3>{u.title}</h3>
-                                    <p>{u.desc}</p>
-                                    <span>{u.date}</span>
+                        return (
+                            <div key={u.update_id} className="flip-card">
+                                <div className="flip-inner">
+
+                                    {/* FRONT */}
+                                    <div className={`flip-front ${colorClass}`}>
+                                        <h3>{u.title}</h3>
+                                        <p>{u.subject}</p>
+                                        <span>
+                                            {new Date(u.updated_time).toLocaleDateString()}
+                                        </span>
+                                    </div>
+
+                                    {/* BACK */}
+                                    <div className={`flip-back ${colorClass}`}>
+                                        <h3>Update Details</h3>
+                                        <p>{u.subject}</p>
+
+                                        <button
+                                            className="flip-btn"
+                                            onClick={() =>
+                                                window.open(`/update/${u.update_id}`, "_blank")
+                                            }
+                                        >
+                                            Learn More
+                                        </button>
+                                    </div>
+
                                 </div>
-
-                                {/* BACK */}
-                                <div className={`flip-back color-${i + 1}`}>
-                                    <h3>What’s New?</h3>
-                                    <p>
-                                        Enhanced performance, better UX, and improved security
-                                        updates rolled out successfully.
-                                    </p>
-                                    <button className="flip-btn">Learn More</button>
-                                </div>
-
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </section>
 
