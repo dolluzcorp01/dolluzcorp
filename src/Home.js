@@ -83,10 +83,18 @@ const Home = () => {
     const [loggedInEmp, setLoggedInEmp] = useState(null);
     const [banners, setBanners] = useState([]);
     const [updates, setUpdates] = useState([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [policies, setPolicies] = useState([]);
     const ITEMS_PER_PAGE = 4;
-
     const BASE_COLORS = ["color-1", "color-2", "color-3", "color-4"];
+    const POLICIES_PER_PAGE = 3;
+    const [policyPage, setPolicyPage] = useState(0);
+
+    const policyTotalPages = Math.ceil(policies.length / POLICIES_PER_PAGE);
+
+    const visiblePolicies = policies.slice(
+        policyPage * POLICIES_PER_PAGE,
+        policyPage * POLICIES_PER_PAGE + POLICIES_PER_PAGE
+    );
 
     const shuffleArray = (arr) => {
         const copy = [...arr];
@@ -115,12 +123,24 @@ const Home = () => {
         setCurrentPage(prev => (prev > 0 ? prev - 1 : prev));
     };
 
+    const nextPolicyPage = () => {
+        if (policyPage < policyTotalPages - 1) {
+            setPolicyPage(prev => prev + 1);
+        }
+    };
+
+    const prevPolicyPage = () => {
+        if (policyPage > 0) {
+            setPolicyPage(prev => prev - 1);
+        }
+    };
+
     useEffect(() => {
         setPageColors(shuffleArray(BASE_COLORS));
     }, [currentPage]);
 
     useEffect(() => {
-        fetchBanners(); fetchUpdates();
+        fetchBanners(); fetchUpdates(); fetchPolicies();
     }, []);
 
     const fetchBanners = async () => {
@@ -141,6 +161,15 @@ const Home = () => {
 
         if (data.success) {
             setUpdates(data.data);
+        }
+    };
+
+    const fetchPolicies = async () => {
+        const res = await apiFetch("/api/Dolluzcorp/policies/list");
+        const data = await res.json();
+
+        if (data.success) {
+            setPolicies(data.data);
         }
     };
 
@@ -320,13 +349,50 @@ const Home = () => {
             </section>
 
             <section className="section section-policies">
-                <h2 className="section-title">Company Policies</h2>
+                <h2 className="section-title">Policies</h2>
+
+                {/* ARROWS — only if more than 3 policies */}
+                {policies.length > POLICIES_PER_PAGE && (
+                    <div className="updates-arrows">
+                        <button
+                            className="arrow-btn"
+                            onClick={prevPolicyPage}
+                            disabled={policyPage === 0}
+                        >
+                            ‹
+                        </button>
+
+                        <button
+                            className="arrow-btn"
+                            onClick={nextPolicyPage}
+                            disabled={policyPage === policyTotalPages - 1}
+                        >
+                            ›
+                        </button>
+                    </div>
+                )}
+
                 <div className="policies-grid">
-                    {policies.map((p, i) => (
-                        <div className="policy-card">
-                            <div className="policy-icon">📄</div>
+                    {visiblePolicies.map((p) => (
+                        <div key={p.policy_id} className="policy-card">
                             <h3>{p.title}</h3>
-                            <p>{p.desc}</p>
+
+                            <div
+                                className="policy-desc"
+                                dangerouslySetInnerHTML={{
+                                    __html: p.description
+                                }}
+                            />
+
+                            {/* LEARN MORE */}
+                            <button
+                                className="policy-btn"
+                                onClick={() =>
+                                    window.open(`/policy/${p.policy_id}`, "_blank")
+                                }
+                            >
+                                Learn More
+                            </button>
                         </div>
                     ))}
                 </div>
