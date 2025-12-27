@@ -40,7 +40,7 @@ const UpdateDetails = () => {
 
             {update.update_image && (
                 <img
-                    src={`https://dadmin.dolluzcorp.in/${update.update_image}`}
+                    src={`${EMP_PROFILE_FILE_BASE}/${update.update_image}`}
                     alt=""
                     className="update-full-image"
                 />
