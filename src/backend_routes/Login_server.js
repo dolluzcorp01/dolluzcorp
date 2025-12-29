@@ -68,10 +68,7 @@ router.post("/Verifylogin", (req, res) => {
         const isPasswordMatch = bcrypt.compareSync(password, employee.account_pass);
         if (!isPasswordMatch)
             return res.status(401).json({ message: "Invalid credentials" });
-
-        if (employee.emp_access_level !== "Admin" && employee.emp_access_level !== "Sub Admin")
-            return res.status(403).json({ message: "Access denied. Only Admin or Sub Admin can login." });
-
+ 
         // 🔹 CREATE JWT TOKEN
         const token = jwt.sign({ emp_id: employee.emp_id }, JWT_SECRET);
         const isProd = process.env.NODE_ENV === "production";
