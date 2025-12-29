@@ -21,10 +21,18 @@ router.get("/banner/list", verifyJWT, (req, res) => {
 /* ---------- Updates and announcements ---------- */
 router.get("/updates/list", verifyJWT, (req, res) => {
     const q = `
-        SELECT *
-        FROM dolluzcorp_updates
-        WHERE deleted_time IS NULL
-        ORDER BY created_time DESC
+    SELECT 
+    u.*,
+    GROUP_CONCAT(CONCAT(i.image_id, '::', i.image_path)
+             ORDER BY i.image_id ASC) AS images
+    FROM dolluzcorp_updates u
+    LEFT JOIN dolluzcorp_update_images i 
+        ON u.update_id = i.update_id
+    WHERE u.deleted_time IS NULL
+    AND (u.display_from IS NULL OR CURDATE() >= u.display_from) 
+    AND (u.display_to IS NULL OR CURDATE() <= u.display_to) 
+    GROUP BY u.update_id
+    ORDER BY u.created_time DESC;
     `;
 
     db.query(q, (err, rows) => {
@@ -35,7 +43,7 @@ router.get("/updates/list", verifyJWT, (req, res) => {
     });
 });
 
-/* ---------- Policies ---------- */ 
+/* ---------- Policies ---------- */
 router.get("/policies/list", verifyJWT, (req, res) => {
     const q = `
         SELECT p.*, d.department_name

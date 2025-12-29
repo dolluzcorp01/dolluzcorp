@@ -38,13 +38,21 @@ const UpdateDetails = () => {
                 dangerouslySetInnerHTML={{ __html: update.description }}
             />
 
-            {update.update_image && (
-                <img
-                    src={`${EMP_PROFILE_FILE_BASE}/${update.update_image}`}
-                    alt=""
-                    className="update-full-image"
-                />
-            )}
+            {update.images &&
+                update.images.split(",").map((item, i) => {
+                    const path = item.includes("::")
+                        ? item.split("::")[1]
+                        : item;
+
+                    return (
+                        <img
+                            key={i}
+                            src={`${EMP_PROFILE_FILE_BASE}/${path}`}
+                            alt="update"
+                            className="update-full-image"
+                        />
+                    );
+                })}
 
             <div className="update-time">
                 Last updated: {new Date(update.updated_time).toLocaleString()}
