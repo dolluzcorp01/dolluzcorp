@@ -17,8 +17,7 @@ const PolicyDetails = () => {
         const data = await res.json();
 
         if (data.success) {
-            const found = data.data.find(p => p.policy_id == id);
-            console.log(found);
+            const found = data.data.find(p => p.policy_id == id); 
             setPolicy(found);
         }
     };

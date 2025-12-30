@@ -185,8 +185,7 @@ const Home = () => {
 
     const fetchNotifications = async () => {
         const res = await apiFetch("/api/employee/notifications/list");
-        const data = await res.json();
-        console.log(data);
+        const data = await res.json(); 
         if (data.success) setNotifications(data.data);
     };
 
