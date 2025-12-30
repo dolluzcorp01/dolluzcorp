@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FaCamera, FaSignOutAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { apiFetch, EMP_PROFILE_FILE_BASE } from "./utils/api";
@@ -13,10 +13,25 @@ const ProfileHeader = ({ loggedInEmp, setLoggedInEmp }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
 
-    const dropdownRef = useRef(null);
     const fileInputRef = useRef(null);
     const modalRef = useRef(null);
- 
+    const profileWrapperRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            // Close profile dropdown
+            if (
+                profileWrapperRef.current &&
+                !profileWrapperRef.current.contains(e.target)
+            ) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     const handleCopyEmail = (email) => {
         navigator.clipboard.writeText(email)
             .then(() => {
@@ -84,7 +99,7 @@ const ProfileHeader = ({ loggedInEmp, setLoggedInEmp }) => {
 
     return (
         <>
-            <div className="profile-header-wrapper">
+            <div className="profile-header-wrapper" ref={profileWrapperRef}>
                 {/* SMALL AVATAR IN HEADER */}
                 <div
                     className="profile-avatar"
@@ -103,7 +118,7 @@ const ProfileHeader = ({ loggedInEmp, setLoggedInEmp }) => {
 
                 {/* DROPDOWN */}
                 {isDropdownOpen && (
-                    <div className="profile-dropdown" ref={dropdownRef}>
+                    <div className="profile-dropdown">
                         {/* PROFILE TOP */}
                         <div className="dropdown-profile">
                             <div

@@ -8,6 +8,70 @@ const fs = require("fs");
 const path = require("path");
 const db = getDBConnection('dadmin');
 
+// 🔹 Get Notifications
+router.get("/notifications/list", verifyJWT, (req, res) => {
+  const empId = req.emp_id;
+
+  const q = `
+    SELECT n.*
+    FROM dolluzcorp_notifications n
+    JOIN employee e ON e.emp_id = ?
+
+    LEFT JOIN dolluzcorp_notification_reads r
+      ON r.notification_id = n.notification_id
+      AND r.emp_id = ?
+
+    LEFT JOIN dolluzcorp_updates u
+      ON n.notification_type = 'UPDATE'
+      AND n.reference_id = u.update_id
+
+    WHERE r.notification_id IS NULL
+      AND (
+        n.notification_type = 'POLICY'
+        OR (
+          n.notification_type = 'UPDATE'
+          AND (u.display_from IS NULL OR CURDATE() >= u.display_from)
+        )
+      )
+      AND (
+        n.department_id = 'ALL'
+        OR FIND_IN_SET(e.emp_department, n.department_id)
+      )
+    ORDER BY n.created_time DESC
+  `;
+
+  db.query(q, [empId, empId], (err, rows) => {
+    if (err) {
+      return res.json({ success: false, devError: err.sqlMessage });
+    }
+    res.json({ success: true, data: rows });
+  });
+});
+
+router.post("/notifications/mark-read", verifyJWT, (req, res) => {
+  const empId = req.emp_id;
+  const { notification_ids } = req.body;
+
+  if (!notification_ids?.length) {
+    return res.json({ success: true });
+  }
+
+  const values = notification_ids.map(id => [id, empId]);
+
+  const q = `
+    INSERT IGNORE INTO dolluzcorp_notification_reads
+    (notification_id, emp_id)
+    VALUES ?
+  `;
+
+  db.query(q, [values], err => {
+    if (err) {
+      return res.json({ success: false, devError: err.sqlMessage });
+    }
+    res.json({ success: true });
+  });
+});
+
 // 🔹 Generate a color based on user name
 function generateColorFromText(text) {
   let hash = 0;

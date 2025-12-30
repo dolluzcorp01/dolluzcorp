@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ProfileHeader from "./ProfileHeader.js";
 import "./Home.css";
 import { apiFetch, EMP_PROFILE_FILE_BASE } from "./utils/api";
-import { FaHome, FaBell, FaClock, FaUserCog, FaFileAlt, FaHeadset, FaBug } from "react-icons/fa";
+import { FaHome, FaBell, FaClock, FaUserCog, FaFileAlt, FaHeadset, FaBug, FaTimes, FaBellSlash, FaBullhorn } from "react-icons/fa";
 
 const apps = [
     { name: "dAdmin", description: "Admin controls & configuration", url: "https://dadmin.dolluzcorp.in/Support_Tickets", icon: <FaUserCog /> },
@@ -75,6 +75,7 @@ const blogs = [
 
 const Home = () => {
     const navigate = useNavigate();
+    const [notifications, setNotifications] = useState([]);
     const [showNotifications, setShowNotifications] = useState(false);
     const [offset, setOffset] = useState(0);
     const [active, setActive] = useState(null);
@@ -88,6 +89,45 @@ const Home = () => {
     const BASE_COLORS = ["color-1", "color-2", "color-3", "color-4"];
     const POLICIES_PER_PAGE = 3;
     const [policyPage, setPolicyPage] = useState(0);
+    const notificationRef = useRef();
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (
+                notificationRef.current &&
+                !notificationRef.current.contains(e.target)
+            ) {
+                setShowNotifications(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const markSingleAsRead = async (notificationId) => {
+        try {
+            const res = await apiFetch("/api/employee/notifications/mark-read", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    notification_ids: [notificationId],
+                }),
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                setNotifications(prev =>
+                    prev.filter(n => n.notification_id !== notificationId)
+                );
+            }
+        } catch (err) {
+            console.error("Failed to mark notification as read", err);
+        }
+    };
 
     const policyTotalPages = Math.ceil(policies.length / POLICIES_PER_PAGE);
 
@@ -140,8 +180,15 @@ const Home = () => {
     }, [currentPage]);
 
     useEffect(() => {
-        fetchBanners(); fetchUpdates(); fetchPolicies();
+        fetchNotifications(); fetchBanners(); fetchUpdates(); fetchPolicies();
     }, []);
+
+    const fetchNotifications = async () => {
+        const res = await apiFetch("/api/employee/notifications/list");
+        const data = await res.json();
+        console.log(data);
+        if (data.success) setNotifications(data.data);
+    };
 
     const fetchBanners = async () => {
         const res = await apiFetch("/api/Dolluzcorp/banner/list");
@@ -211,7 +258,6 @@ const Home = () => {
                 credentials: 'include',
             });
             const data = await res.json();
-            console.log(data[0]);
             setLoggedInEmp(data[0]);
             if (data?.message === "Access Denied. No Token Provided!" || data?.message === "Invalid Token") {
                 navigate("/login");
@@ -232,26 +278,78 @@ const Home = () => {
                 </div>
 
                 {/* CENTER BRAND */}
-                <div className="header-center">
+                <div className="header-center">1
                     <span className="brand-text">DolluzCorp</span>
                 </div>
 
                 <div className="header-right">
-                    <FaBell
-                        className="header-icon"
-                        onClick={() => setShowNotifications(!showNotifications)}
-                    />
+                    <div className="notification-wrapper" ref={notificationRef}>
+                        <FaBell
+                            className="header-icon"
+                            onClick={() => setShowNotifications(prev => !prev)}
+                        />
+
+                        {notifications.length > 0 && (
+                            <span className="notification-badge">
+                                {notifications.length}
+                            </span>
+                        )}
+
+                        {showNotifications && (
+                            <div className="notification-box">
+                                <div className="notification-header">
+                                    <span>Notifications</span>
+                                    {notifications.length > 0 && (
+                                        <span className="notification-count">
+                                            {notifications.length}
+                                        </span>
+                                    )}
+                                </div>
+
+                                <div className="notification-list">
+                                    {notifications.length === 0 ? (
+                                        <div className="notification-empty">
+                                            <FaBellSlash />
+                                            <p>No new notifications</p>
+                                        </div>
+                                    ) : (
+                                        notifications.map(n => (
+                                            <div key={n.notification_id} className="notification-item">
+                                                <div className="notification-icon">
+                                                    {n.notification_type === "UPDATE" && <FaBullhorn />}
+                                                    {n.notification_type === "POLICY" && <FaFileAlt />}
+                                                </div>
+
+                                                <div className="notification-content">
+                                                    <p className="notification-title">{n.title}</p>
+                                                    <span className="notification-time">
+                                                        {new Date(n.created_time).toLocaleString()}
+                                                    </span>
+                                                </div>
+
+                                                <button
+                                                    className="notification-close"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        markSingleAsRead(n.notification_id);
+                                                    }}
+                                                    aria-label="Dismiss notification"
+                                                >
+                                                    <FaTimes />
+                                                </button>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
                     <ProfileHeader
                         loggedInEmp={loggedInEmp}
                         setLoggedInEmp={setLoggedInEmp}
                     />
                 </div>
-                {/* NOTIFICATION POPUP */}
-                {showNotifications && (
-                    <div className="notification-box">
-                        <p>No new notifications</p>
-                    </div>
-                )}
             </div>
 
             <section className="section section-apps">
