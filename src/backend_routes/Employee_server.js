@@ -13,31 +13,34 @@ router.get("/notifications/list", verifyJWT, (req, res) => {
   const empId = req.emp_id;
 
   const q = `
-    SELECT n.*
-    FROM dolluzcorp_notifications n
-    JOIN employee e ON e.emp_id = ?
-
-    LEFT JOIN dolluzcorp_notification_reads r
-      ON r.notification_id = n.notification_id
-      AND r.emp_id = ?
-
-    LEFT JOIN dolluzcorp_updates u
-      ON n.notification_type = 'UPDATE'
-      AND n.reference_id = u.update_id
-
-    WHERE r.notification_id IS NULL
-      AND (
-        n.notification_type = 'POLICY'
-        OR (
-          n.notification_type = 'UPDATE'
-          AND (u.display_from IS NULL OR CURDATE() >= u.display_from)
-        )
-      )
-      AND (
-        n.department_id = 'ALL'
-        OR FIND_IN_SET(e.emp_department, n.department_id)
-      )
-    ORDER BY n.created_time DESC
+        SELECT e.emp_department,  n.*
+        FROM dolluzcorp_notifications n
+        JOIN employee e ON e.emp_id = ?
+        LEFT JOIN dolluzcorp_notification_reads r ON r.notification_id = n.notification_id AND r.emp_id = ?
+        LEFT JOIN dolluzcorp_updates u ON n.notification_type = 'UPDATE' AND n.reference_id = u.update_id
+        WHERE r.notification_id IS NULL
+          AND (
+              (n.notification_category = 'general')
+              OR (n.notification_category = 'department'
+                AND (n.notification_for = 'ALL' 
+                OR FIND_IN_SET(e.emp_department COLLATE utf8mb4_0900_ai_ci, n.notification_for COLLATE utf8mb4_0900_ai_ci))
+                )
+              OR (n.notification_category = 'job_position'
+            AND FIND_IN_SET(e.job_position COLLATE utf8mb4_0900_ai_ci, n.notification_for COLLATE utf8mb4_0900_ai_ci)
+                )
+              OR (n.notification_category = 'employee'
+            AND FIND_IN_SET(e.emp_id COLLATE utf8mb4_0900_ai_ci, n.notification_for COLLATE utf8mb4_0900_ai_ci)
+                )
+              OR (n.notification_category = 'location'
+            AND FIND_IN_SET(e.emp_location COLLATE utf8mb4_0900_ai_ci, n.notification_for COLLATE utf8mb4_0900_ai_ci)
+                )
+              OR (n.notification_type COLLATE utf8mb4_0900_ai_ci = 'POLICY')
+              OR (n.notification_type COLLATE utf8mb4_0900_ai_ci = 'UPDATE'
+                AND FIND_IN_SET(e.emp_department COLLATE utf8mb4_0900_ai_ci, n.notification_for COLLATE utf8mb4_0900_ai_ci)
+            AND (u.display_from IS NULL OR CURDATE() >= u.display_from)
+                  )
+              )
+        ORDER BY n.created_time DESC;
   `;
 
   db.query(q, [empId, empId], (err, rows) => {
