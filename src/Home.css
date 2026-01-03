@@ -155,17 +155,17 @@
 
 .notification-count {
     min-width: 22px;
-    height: 22px; 
+    height: 22px;
     display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #ffffff !important; 
+    color: #ffffff !important;
     font-size: 12px;
     font-weight: 700;
-    line-height: 1; 
+    line-height: 1;
     border-radius: 999px;
-    padding: 0 6px; 
+    padding: 0 6px;
     box-shadow: 0 4px 10px rgba(99, 102, 241, 0.45);
 }
 
@@ -937,4 +937,26 @@
     --grad-brand: linear-gradient(135deg, #2563eb, #7c3aed);
     --grad-soft: linear-gradient(135deg, #eef2ff, #f8fafc);
     --grad-dark: linear-gradient(135deg, #020617, #0f172a);
+}
+
+.highlight-card {
+    animation: highlightPulse 2.5s ease;
+    outline: 3px solid #ff9800;
+    box-shadow: 0 0 0 6px rgba(255, 152, 0, 0.35);
+}
+
+@keyframes highlightPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.6);
+    }
+
+    50% {
+        transform: scale(1.03);
+        box-shadow: 0 0 0 12px rgba(255, 152, 0, 0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }

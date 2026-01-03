@@ -16,21 +16,6 @@ const apps = [
     { name: "dTime", description: "Manage attendance, leave, shifts", url: "https://dtime.dolluzcorp.in/Timesheet_entry", icon: <FaClock /> },
 ];
 
-const policies = [
-    {
-        title: "Information Security Policy",
-        desc: "Ensuring confidentiality, integrity, and availability of all systems."
-    },
-    {
-        title: "Employee Code of Conduct",
-        desc: "Guidelines to maintain professionalism and ethical behavior."
-    },
-    {
-        title: "Data Privacy Policy",
-        desc: "Protecting user and organizational data across platforms."
-    }
-];
-
 const blogs = [
     {
         id: 1,
@@ -92,7 +77,69 @@ const Home = () => {
     const BASE_COLORS = ["color-1", "color-2", "color-3", "color-4"];
     const POLICIES_PER_PAGE = 3;
     const [policyPage, setPolicyPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [pageColors, setPageColors] = useState(BASE_COLORS);
     const notificationRef = useRef();
+    const updatesRef = useRef(null);
+    const policiesRef = useRef(null);
+
+    useEffect(() => {
+        fetchloginedEmployees(); fetchNotifications(); fetchBanners(); fetchUpdates(); fetchPolicies();
+    }, []);
+
+    const fetchloginedEmployees = async () => {
+        try {
+            const res = await apiFetch(`/api/employee/logined_employee`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+            const data = await res.json();
+            setLoggedInEmp(data[0]);
+            if (data?.message === "Access Denied. No Token Provided!" || data?.message === "Invalid Token") {
+                navigate("/login");
+                return;
+            }
+        } catch (err) {
+            console.error("Error fetching employees:", err);
+        }
+    };
+
+    const fetchNotifications = async () => {
+        const res = await apiFetch("/api/employee/notifications/list");
+        const data = await res.json();
+        console.log("Fetched notifications:", data);
+        if (data.success) setNotifications(data.data);
+    };
+
+    const fetchBanners = async () => {
+        const res = await apiFetch("/api/Dolluzcorp/banner/list");
+        const data = await res.json();
+
+        if (data.success) {
+            const sorted = data.data.sort(
+                (a, b) => a.display_order - b.display_order
+            );
+            setBanners(sorted);
+        }
+    };
+
+    const fetchUpdates = async () => {
+        const res = await apiFetch("/api/Dolluzcorp/updates/list");
+        const data = await res.json();
+
+        if (data.success) {
+            setUpdates(data.data);
+        }
+    };
+
+    const fetchPolicies = async () => {
+        const res = await apiFetch("/api/Dolluzcorp/policies/list");
+        const data = await res.json();
+
+        if (data.success) {
+            setPolicies(data.data);
+        }
+    };
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -132,6 +179,9 @@ const Home = () => {
         }
     };
 
+    const getPageIndex = (index, itemsPerPage) =>
+        Math.floor(index / itemsPerPage);
+
     const policyTotalPages = Math.ceil(policies.length / POLICIES_PER_PAGE);
 
     const visiblePolicies = policies.slice(
@@ -147,9 +197,6 @@ const Home = () => {
         }
         return copy;
     };
-
-    const [currentPage, setCurrentPage] = useState(0);
-    const [pageColors, setPageColors] = useState(BASE_COLORS);
 
     const totalPages = Math.ceil(updates.length / ITEMS_PER_PAGE);
 
@@ -182,43 +229,89 @@ const Home = () => {
         setPageColors(shuffleArray(BASE_COLORS));
     }, [currentPage]);
 
-    useEffect(() => {
-        fetchNotifications(); fetchBanners(); fetchUpdates(); fetchPolicies();
-    }, []);
+    const handleNotificationClick = (n) => {
+        setShowNotifications(false);
 
-    const fetchNotifications = async () => {
-        const res = await apiFetch("/api/employee/notifications/list");
-        const data = await res.json();
-        if (data.success) setNotifications(data.data);
-    };
-
-    const fetchBanners = async () => {
-        const res = await apiFetch("/api/Dolluzcorp/banner/list");
-        const data = await res.json();
-
-        if (data.success) {
-            const sorted = data.data.sort(
-                (a, b) => a.display_order - b.display_order
+        /* ================= UPDATE ================= */
+        if (n.notification_type === "UPDATE") {
+            const index = updates.findIndex(
+                u => u.update_id === n.reference_id
             );
-            setBanners(sorted);
+
+            if (index === -1) return;
+
+            const page = getPageIndex(index, ITEMS_PER_PAGE);
+
+            // 1️⃣ Switch page first
+            setCurrentPage(page);
+
+            // 2️⃣ Scroll to section
+            setTimeout(() => {
+                updatesRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }, 100);
+
+            // 3️⃣ Highlight card AFTER render
+            setTimeout(() => {
+                const el = document.querySelector(
+                    `[data-update-id="${n.reference_id}"]`
+                );
+
+                if (el) {
+                    el.classList.add("highlight-card");
+                    el.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                    setTimeout(() => {
+                        el.classList.remove("highlight-card");
+                    }, 2500);
+                }
+            }, 500);
         }
-    };
 
-    const fetchUpdates = async () => {
-        const res = await apiFetch("/api/Dolluzcorp/updates/list");
-        const data = await res.json();
+        /* ================= POLICY ================= */
+        if (n.notification_type === "POLICY") {
+            const index = policies.findIndex(
+                p => p.policy_id === n.reference_id
+            );
 
-        if (data.success) {
-            setUpdates(data.data);
-        }
-    };
+            if (index === -1) return;
 
-    const fetchPolicies = async () => {
-        const res = await apiFetch("/api/Dolluzcorp/policies/list");
-        const data = await res.json();
+            const page = getPageIndex(index, POLICIES_PER_PAGE);
 
-        if (data.success) {
-            setPolicies(data.data);
+            // 1️⃣ Switch page
+            setPolicyPage(page);
+
+            // 2️⃣ Scroll to section
+            setTimeout(() => {
+                policiesRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }, 100);
+
+            // 3️⃣ Highlight card
+            setTimeout(() => {
+                const el = document.querySelector(
+                    `[data-policy-id="${n.reference_id}"]`
+                );
+
+                if (el) {
+                    el.classList.add("highlight-card");
+                    el.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                    setTimeout(() => {
+                        el.classList.remove("highlight-card");
+                    }, 2500);
+                }
+            }, 500);
         }
     };
 
@@ -247,27 +340,6 @@ const Home = () => {
     const handleMouseLeave = () => {
         setOffset(0);
         setActive(null);
-    };
-
-    useEffect(() => {
-        fetchloginedEmployees();
-    }, []);
-
-    const fetchloginedEmployees = async () => {
-        try {
-            const res = await apiFetch(`/api/employee/logined_employee`, {
-                method: 'GET',
-                credentials: 'include',
-            });
-            const data = await res.json();
-            setLoggedInEmp(data[0]);
-            if (data?.message === "Access Denied. No Token Provided!" || data?.message === "Invalid Token") {
-                navigate("/login");
-                return;
-            }
-        } catch (err) {
-            console.error("Error fetching employees:", err);
-        }
     };
 
     return (
@@ -316,7 +388,11 @@ const Home = () => {
                                         </div>
                                     ) : (
                                         notifications.map(n => (
-                                            <div key={n.notification_id} className="notification-item">
+                                            <div
+                                                key={n.notification_id}
+                                                className="notification-item"
+                                                onClick={() => handleNotificationClick(n)}
+                                            >
                                                 <div className="notification-icon">
                                                     {{
                                                         UPDATE: <FaBullhorn />,
@@ -388,7 +464,11 @@ const Home = () => {
                 </div>
             </section>
 
-            <section className="section section-updates">
+            <section
+                ref={updatesRef}
+                id="updates-section"
+                className="section section-updates"
+            >
                 <h2 className="section-title">Updates & Announcements</h2>
 
                 {/* ARROWS — only if more than 4 updates */}
@@ -417,7 +497,7 @@ const Home = () => {
                         const colorClass = pageColors[i];
 
                         return (
-                            <div key={u.update_id} className="flip-card">
+                            <div key={u.update_id} className="flip-card" data-update-id={u.update_id}>
                                 <div className="flip-inner">
 
                                     {/* FRONT */}
@@ -477,7 +557,7 @@ const Home = () => {
 
                 <div className="policies-grid">
                     {visiblePolicies.map((p) => (
-                        <div key={p.policy_id} className="policy-card">
+                        <div key={p.policy_id} className="policy-card" data-policy-id={p.policy_id}>
                             <h3>{p.title}</h3>
 
                             <div
