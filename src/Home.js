@@ -5,7 +5,7 @@ import "./Home.css";
 import { apiFetch, EMP_PROFILE_FILE_BASE } from "./utils/api";
 import {
     FaHome, FaBell, FaClock, FaUserCog, FaFileAlt, FaHeadset,
-    FaBug, FaTimes, FaBellSlash, FaBullhorn, FaCommentDots
+    FaBug, FaTimes, FaBellSlash, FaBullhorn, FaCommentDots, FaClipboardList
 } from "react-icons/fa";
 
 const apps = [
@@ -82,6 +82,8 @@ const Home = () => {
     const notificationRef = useRef();
     const updatesRef = useRef(null);
     const policiesRef = useRef(null);
+    const [showManualView, setShowManualView] = useState(false);
+    const [activeManualNotification, setActiveManualNotification] = useState(null);
 
     useEffect(() => {
         fetchloginedEmployees(); fetchNotifications(); fetchBanners(); fetchUpdates(); fetchPolicies();
@@ -107,7 +109,6 @@ const Home = () => {
     const fetchNotifications = async () => {
         const res = await apiFetch("/api/employee/notifications/list");
         const data = await res.json();
-        console.log("Fetched notifications:", data);
         if (data.success) setNotifications(data.data);
     };
 
@@ -229,23 +230,41 @@ const Home = () => {
         setPageColors(shuffleArray(BASE_COLORS));
     }, [currentPage]);
 
+    const getCreatorName = (n, maxLength = 18) => {
+        if (!n.created_by_first_name) return "System";
+
+        const fullName = `${n.created_by_first_name} ${n.created_by_last_name || ""}`.trim();
+
+        return fullName.length > maxLength
+            ? fullName.slice(0, maxLength) + "..."
+            : fullName;
+    };
+
     const handleNotificationClick = (n) => {
-        setShowNotifications(false);
+        // ✅ Mark as read immediately when clicked 
+        //markSingleAsRead(n.notification_id);
+
+        /* ================= MANUAL ================= */
+        if (n.notification_type === "MANUAL") {
+            setActiveManualNotification(n);
+            setShowManualView(true);
+            return; // ⛔ stop here (no comparison)
+        }
 
         /* ================= UPDATE ================= */
         if (n.notification_type === "UPDATE") {
+
+            const updateId = Number(n.notification_value); // ✅ FIX
+
             const index = updates.findIndex(
-                u => u.update_id === n.reference_id
+                u => u.update_id === updateId
             );
 
             if (index === -1) return;
 
             const page = getPageIndex(index, ITEMS_PER_PAGE);
-
-            // 1️⃣ Switch page first
             setCurrentPage(page);
 
-            // 2️⃣ Scroll to section
             setTimeout(() => {
                 updatesRef.current?.scrollIntoView({
                     behavior: "smooth",
@@ -253,18 +272,14 @@ const Home = () => {
                 });
             }, 100);
 
-            // 3️⃣ Highlight card AFTER render
             setTimeout(() => {
                 const el = document.querySelector(
-                    `[data-update-id="${n.reference_id}"]`
+                    `[data-update-id="${updateId}"]`
                 );
 
                 if (el) {
                     el.classList.add("highlight-card");
-                    el.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
+                    el.scrollIntoView({ behavior: "smooth", block: "center" });
 
                     setTimeout(() => {
                         el.classList.remove("highlight-card");
@@ -275,18 +290,18 @@ const Home = () => {
 
         /* ================= POLICY ================= */
         if (n.notification_type === "POLICY") {
+
+            const policyId = Number(n.notification_value); // ✅ FIX
+
             const index = policies.findIndex(
-                p => p.policy_id === n.reference_id
+                p => p.policy_id === policyId
             );
 
             if (index === -1) return;
 
             const page = getPageIndex(index, POLICIES_PER_PAGE);
-
-            // 1️⃣ Switch page
             setPolicyPage(page);
 
-            // 2️⃣ Scroll to section
             setTimeout(() => {
                 policiesRef.current?.scrollIntoView({
                     behavior: "smooth",
@@ -294,18 +309,14 @@ const Home = () => {
                 });
             }, 100);
 
-            // 3️⃣ Highlight card
             setTimeout(() => {
                 const el = document.querySelector(
-                    `[data-policy-id="${n.reference_id}"]`
+                    `[data-policy-id="${policyId}"]`
                 );
 
                 if (el) {
                     el.classList.add("highlight-card");
-                    el.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
+                    el.scrollIntoView({ behavior: "smooth", block: "center" });
 
                     setTimeout(() => {
                         el.classList.remove("highlight-card");
@@ -396,7 +407,7 @@ const Home = () => {
                                                 <div className="notification-icon">
                                                     {{
                                                         UPDATE: <FaBullhorn />,
-                                                        POLICY: <FaFileAlt />,
+                                                        POLICY: <FaClipboardList />,
                                                         MANUAL: <FaCommentDots />
                                                     }[n.notification_type] || <FaCommentDots />}
                                                 </div>
@@ -432,6 +443,40 @@ const Home = () => {
                     />
                 </div>
             </div>
+
+            {showManualView && activeManualNotification && (
+                <div
+                    className="manual-view-overlay"
+                    onMouseDown={(e) => e.stopPropagation()}
+                >
+                    <div className="manual-view-box">
+                        <div className="manual-view-header">
+                            <h4>{activeManualNotification.title}</h4>
+                            <button
+                                className="manual-view-close"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setShowManualView(false);
+                                }}
+                            >
+                                <FaTimes />
+                            </button>
+                        </div>
+
+                        <div className="manual-view-body">
+                            <p>{activeManualNotification.notification_value}</p>
+                        </div>
+
+                        <div className="manual-view-footer">
+                            <span>
+                                From <strong>{getCreatorName(activeManualNotification)}</strong>
+                                {" • "}
+                                {new Date(activeManualNotification.created_time).toLocaleString()}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <section className="section section-apps">
                 {/* DAPPS SECTION */}

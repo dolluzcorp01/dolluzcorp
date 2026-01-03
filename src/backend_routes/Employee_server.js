@@ -13,11 +13,11 @@ router.get("/notifications/list", verifyJWT, (req, res) => {
   const empId = req.emp_id;
 
   const q = `
-        SELECT e.emp_department,  n.*
+        SELECT e.emp_first_name AS created_by_first_name, e.emp_last_name AS created_by_last_name, n.*
         FROM dolluzcorp_notifications n
         JOIN employee e ON e.emp_id = ?
         LEFT JOIN dolluzcorp_notification_reads r ON r.notification_id = n.notification_id AND r.emp_id = ?
-        LEFT JOIN dolluzcorp_updates u ON n.notification_type = 'UPDATE' AND n.reference_id = u.update_id
+        LEFT JOIN dolluzcorp_updates u ON n.notification_type = 'UPDATE' AND n.notification_value = u.update_id
         WHERE r.notification_id IS NULL
           AND (
               (n.notification_category = 'general')
@@ -249,14 +249,12 @@ router.get("/logined_employee", verifyJWT, (req, res) => {
 const profileUpload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      console.log("Upload destination:", process.env.EMP_PROFILE_UPLOAD_PATH);
       cb(null, process.env.EMP_PROFILE_UPLOAD_PATH);
     },
     filename: (req, file, cb) => {
       const empId = req.params.empId;
       const ext = path.extname(file.originalname);
       const fileName = `${empId}-${Date.now()}${ext}`;
-      console.log("Saving file as:", fileName);
       cb(null, fileName);
     },
   }),
