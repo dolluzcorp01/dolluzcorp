@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 import ProfileHeader from "./ProfileHeader.js";
 import "./Home.css";
 import { apiFetch, EMP_PROFILE_FILE_BASE } from "./utils/api";
-import { FaHome, FaBell, FaClock, FaUserCog, FaFileAlt, FaHeadset, FaBug, FaTimes, FaBellSlash, FaBullhorn } from "react-icons/fa";
+import {
+    FaHome, FaBell, FaClock, FaUserCog, FaFileAlt, FaHeadset,
+    FaBug, FaTimes, FaBellSlash, FaBullhorn, FaCommentDots
+} from "react-icons/fa";
 
 const apps = [
     { name: "dAdmin", description: "Admin controls & configuration", url: "https://dadmin.dolluzcorp.in/Support_Tickets", icon: <FaUserCog /> },
@@ -185,7 +188,7 @@ const Home = () => {
 
     const fetchNotifications = async () => {
         const res = await apiFetch("/api/employee/notifications/list");
-        const data = await res.json(); 
+        const data = await res.json();
         if (data.success) setNotifications(data.data);
     };
 
@@ -315,8 +318,11 @@ const Home = () => {
                                         notifications.map(n => (
                                             <div key={n.notification_id} className="notification-item">
                                                 <div className="notification-icon">
-                                                    {n.notification_type === "UPDATE" && <FaBullhorn />}
-                                                    {n.notification_type === "POLICY" && <FaFileAlt />}
+                                                    {{
+                                                        UPDATE: <FaBullhorn />,
+                                                        POLICY: <FaFileAlt />,
+                                                        MANUAL: <FaCommentDots />
+                                                    }[n.notification_type] || <FaCommentDots />}
                                                 </div>
 
                                                 <div className="notification-content">
