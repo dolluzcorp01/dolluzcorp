@@ -363,7 +363,7 @@ const Home = () => {
                 </div>
 
                 {/* CENTER BRAND */}
-                <div className="header-center">1
+                <div className="header-center">
                     <span className="brand-text">DolluzCorp</span>
                 </div>
 
