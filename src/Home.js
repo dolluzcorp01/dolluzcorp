@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ProfileHeader from "./ProfileHeader.js";
-import "./Home.css";
 import { apiFetch, EMP_PROFILE_FILE_BASE } from "./utils/api";
 import {
     FaHome, FaBell, FaClock, FaUserCog, FaFileAlt, FaHeadset,
     FaBug, FaTimes, FaBellSlash, FaBullhorn, FaCommentDots, FaClipboardList
 } from "react-icons/fa";
+import logo_eagle from "./assets/img/logo_eagle.png";
+import ProfileHeader from "./ProfileHeader.js";
+import "./Home.css";
 
 const apps = [
     { name: "dAdmin", description: "Admin controls & configuration", url: "https://dadmin.dolluzcorp.in/Support_Tickets", icon: <FaUserCog /> },
@@ -359,12 +360,14 @@ const Home = () => {
             {/* HEADER */}
             <div className="home-header">
                 <div className="header-left">
-                    <FaHome className="header-icon" />
-                </div>
+                    {/* BRAND */}
+                    <div className="brand-wrapper">
+                        <img src={logo_eagle} alt="DolluzCorp Logo" className="brand-logo" />
+                        <span className="brand-text">DolluzCorp /</span>
+                    </div>
 
-                {/* CENTER BRAND */}
-                <div className="header-center">
-                    <span className="brand-text">DolluzCorp</span>
+                    <FaHome className="header-icon" />
+
                 </div>
 
                 <div className="header-right">
