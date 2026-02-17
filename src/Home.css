@@ -450,24 +450,24 @@
     box-shadow: var(--shadow-hover);
 }
 
-.app-card:nth-child(1) .app-icon {
-    color: #3B82F6;
+.app-card:nth-child(1) {
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
 }
 
-.app-card:nth-child(2) .app-icon {
-    color: #8B5CF6;
+.app-card:nth-child(2) {
+    background: linear-gradient(135deg, #A855F7, #7C3AED);
 }
 
-.app-card:nth-child(3) .app-icon {
-    color: #EC4899;
+.app-card:nth-child(3) {
+    background: linear-gradient(135deg, #EC4899, #DB2777);
 }
 
-.app-card:nth-child(4) .app-icon {
-    color: #F59E0B;
+.app-card:nth-child(4) {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
 }
 
-.app-card:nth-child(5) .app-icon {
-    color: #10B981;
+.app-card:nth-child(5) {
+    background: linear-gradient(135deg, #10B981, #059669);
 }
 
 .app-card {
@@ -486,15 +486,15 @@
 }
 
 .app-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(6px);
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.20);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 20px;
+    color: #ffffff;
 }
 
 .app-info h2 {
