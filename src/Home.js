@@ -378,7 +378,7 @@ const Home = () => {
                         />
 
                         {notifications.length > 0 && (
-                            <span className="notification-badge">
+                            <span className="notification-badge" onClick={() => setShowNotifications(prev => !prev)}>
                                 {notifications.length}
                             </span>
                         )}
@@ -481,6 +481,59 @@ const Home = () => {
                 </div>
             )}
 
+            {/* intro SECTION */}
+            <section className="intro-section">
+
+                {/* LEFT SIDE TEXT */}
+                <div className="intro-left">
+                    <span className="intro-badge">Innovating Enterprise Solutions</span>
+
+                    <h1 className="intro-title">
+                        Empowering the <br />
+                        <span>Modern Workforce</span>
+                    </h1>
+
+                    <p className="intro-description">
+                        DolluzCorp provides a seamless, integrated ecosystem of
+                        dApps designed to streamline your daily operations,
+                        from HR to development and beyond.
+                    </p>
+
+                    <div className="intro-stats">
+                        <div>
+                            <h3>5+</h3>
+                            <span>dApps</span>
+                        </div>
+                        <div>
+                            <h3>100+</h3>
+                            <span>Employees</span>
+                        </div>
+                        <div>
+                            <h3>99.9%</h3>
+                            <span>Uptime</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                {/* RIGHT SIDE BANNER */}
+                <div className="intro-right">
+                    <div className="banner-slider">
+                        <div className="banner-track">
+                            {[...banners, ...banners].map((b, index) => (
+                                <img
+                                    key={index}
+                                    src={`http://localhost:4005/${b.banner_image.replace(/\\/g, "/")}`}
+                                    alt="banner"
+                                    className="banner-img"
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
             <section className="section section-apps">
                 {/* DAPPS SECTION */}
                 <h2 className="section-title">Our dApps</h2>
@@ -494,21 +547,6 @@ const Home = () => {
                             </div>
                         </div>
                     ))}
-                </div>
-            </section>
-
-            <section className="section section-banner">
-                <div className="banner-slider">
-                    <div className="banner-track">
-                        {banners.map((b) => (
-                            <img
-                                key={b.banner_id}
-                                src={`${EMP_PROFILE_FILE_BASE}/${b.banner_image.replace(/\\/g, "/")}`}
-                                alt="banner"
-                                className="banner-img"
-                            />
-                        ))}
-                    </div>
                 </div>
             </section>
 
@@ -540,43 +578,51 @@ const Home = () => {
                     </div>
                 )}
 
-                <div className="updates-grid flip-grid">
-                    {visibleUpdates.map((u, i) => {
-                        const colorClass = pageColors[i];
+                {updates.length === 0 ? (
+                    <div className="updates-empty">
+                        <div className="empty-icon">📭</div>
+                        <h3>No Updates Yet</h3>
+                        <p>
+                            You're all caught up. New announcements will appear here
+                            once available.
+                        </p>
+                    </div>
+                ) : (
+                    <div className="updates-grid flip-grid">
+                        {visibleUpdates.map((u, i) => {
+                            const colorClass = pageColors[i];
 
-                        return (
-                            <div key={u.update_id} className="flip-card" data-update-id={u.update_id}>
-                                <div className="flip-inner">
+                            return (
+                                <div key={u.update_id} className="flip-card">
+                                    <div className="flip-inner">
+                                        <div className={`flip-front ${colorClass}`}>
+                                            <h3>{u.title}</h3>
+                                            <p>{u.subject}</p>
+                                            <span>
+                                                {new Date(u.updated_time).toLocaleDateString()}
+                                            </span>
+                                        </div>
 
-                                    {/* FRONT */}
-                                    <div className={`flip-front ${colorClass}`}>
-                                        <h3>{u.title}</h3>
-                                        <p>{u.subject}</p>
-                                        <span>
-                                            {new Date(u.updated_time).toLocaleDateString()}
-                                        </span>
+                                        <div className={`flip-back ${colorClass}`}>
+                                            <h3>Update Details</h3>
+                                            <p>{u.subject}</p>
+
+                                            <button
+                                                className="flip-btn"
+                                                onClick={() =>
+                                                    window.open(`/update/${u.update_id}`, "_blank")
+                                                }
+                                            >
+                                                Learn More
+                                            </button>
+                                        </div>
                                     </div>
-
-                                    {/* BACK */}
-                                    <div className={`flip-back ${colorClass}`}>
-                                        <h3>Update Details</h3>
-                                        <p>{u.subject}</p>
-
-                                        <button
-                                            className="flip-btn"
-                                            onClick={() =>
-                                                window.open(`/update/${u.update_id}`, "_blank")
-                                            }
-                                        >
-                                            Learn More
-                                        </button>
-                                    </div>
-
                                 </div>
-                            </div>
-                        );
-                    })}
-                </div>
+                            );
+                        })}
+                    </div>
+                )}
+
             </section>
 
             <section className="section section-policies">
