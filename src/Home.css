@@ -470,35 +470,6 @@
     gap: 20px;
 }
 
-.btn-primary {
-    background: linear-gradient(135deg, #a78bfa, #7c3aed);
-    color: white;
-    border: none;
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-primary:hover {
-    transform: translateY(-3px);
-}
-
-.btn-secondary {
-    background: transparent;
-    border: 1px solid #444;
-    color: white;
-    padding: 14px 28px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-secondary:hover {
-    background: #1e1e2f;
-}
-
 /* RIGHT SIDE */
 .intro-right {
     flex: 1;

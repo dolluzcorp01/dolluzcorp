@@ -222,7 +222,7 @@ function Login() {
                             <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
 
-                        <button className="btn btn-primary" onClick={handleLogin}>Secure Sign-in</button>
+                        <button className="btn btn-primary login-btn" onClick={handleLogin}>Secure Sign-in</button>
 
                         {/* Forgot password from login page */}
                         <a onClick={() => {

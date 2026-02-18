@@ -80,7 +80,7 @@
 }
 
 /* Primary Button */
-.btn-primary {
+.login-btn {
     background: linear-gradient(135deg, #0072ff, #00c6ff);
     border: none;
     border-radius: 10px;
@@ -94,7 +94,7 @@
 }
 
 /* Hover Glow */
-.btn-primary:hover {
+.login-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 150, 255, 0.5);
 }
