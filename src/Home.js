@@ -523,7 +523,7 @@ const Home = () => {
                             {[...banners, ...banners].map((b, index) => (
                                 <img
                                     key={index}
-                                    src={`http://localhost:4005/${b.banner_image.replace(/\\/g, "/")}`}
+                                    src={`${EMP_PROFILE_FILE_BASE}/${b.banner_image.replace(/\\/g, "/")}`}
                                     alt="banner"
                                     className="banner-img"
                                 />
