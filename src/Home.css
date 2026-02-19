@@ -1049,93 +1049,123 @@
 
 /* AWARDS SECTION */
 .awards-section {
-    padding: 80px 20px;
+    padding: 120px 20px;
     text-align: center;
     position: relative;
     overflow: hidden;
+    background: radial-gradient(circle at 20% 20%, rgba(250, 204, 21, 0.08), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(79, 124, 255, 0.08), transparent 40%),
+        #000;
 }
 
-.awards-section::before {
+/* Soft floating glow */
+.awards-section::after {
     content: "";
     position: absolute;
-    inset: 0;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(250, 204, 21, 0.15), transparent 60%);
+    top: -200px;
+    left: -200px;
+    filter: blur(100px);
+    z-index: 0;
 }
 
 /* Titles */
 .cert-title {
-    font-size: 42px;
-    letter-spacing: 4px;
+    font-size: 48px;
+    letter-spacing: 6px;
     font-weight: 800;
-    color: #facc15;
-    text-transform: uppercase;
-    margin-bottom: 12px;
+    background: linear-gradient(90deg, #facc15, #f59e0b, #facc15);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
 }
 
 .cert-subtitle {
     font-size: 18px;
-    color: #d1d5db;
-    margin-bottom: 60px;
+    color: #9ca3af;
+    margin-bottom: 80px;
+    letter-spacing: 2px;
 }
 
-/* Logos row */
 .awards-row {
     display: flex;
     justify-content: center;
-    gap: 120px;
+    gap: 60px;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
 }
 
-/* Each logo */
+/* Glass card style */
+.award-item {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 40px 30px;
+    border-radius: 24px;
+    transition: all 0.4s ease;
+    width: 260px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
 .award-item img {
-    max-width: 220px;
-    transition: transform 0.3s ease;
+    max-width: 160px;
+    transition: transform 0.4s ease;
+}
+
+/* Hover effect */
+.award-item:hover {
+    transform: translateY(-10px);
+    border-color: #facc15;
+    box-shadow: 0 20px 60px rgba(250, 204, 21, 0.25);
 }
 
 .award-item:hover img {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .award-item span {
-    margin-top: 18px;
+    margin-top: 20px;
     display: block;
     font-size: 16px;
     font-weight: 600;
-    color: #ffffff;
+    color: #f9fafb;
+    letter-spacing: 1px;
 }
 
-/* BIG TEXT BELOW */
 .cert-description {
-    margin-top: 80px;
-    max-width: 1000px;
+    margin-top: 120px;
+    max-width: 950px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .cert-description p {
-    font-size: 28px;
-    line-height: 1.6;
-    font-weight: 700;
-    color: #ffffff;
+    font-size: 26px;
+    line-height: 1.7;
+    font-weight: 600;
+    color: #e5e7eb;
     text-transform: uppercase;
-    margin-bottom: 40px;
+    letter-spacing: 1px;
 }
 
-/* BUTTON */
 .cert-btn {
-    background: var(--brand-accent);
+    margin-top: 30px;
+    background: linear-gradient(135deg, #facc15, #f59e0b);
     color: #000;
-    padding: 14px 34px;
+    padding: 16px 40px;
     font-size: 16px;
     font-weight: 700;
-    border-radius: 30px;
+    border-radius: 40px;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .cert-btn:hover {
-    background: #eab308;
-    transform: translateY(-2px);
+    transform: translateY(-4px);
 }
 
 .highlight-card {
