@@ -17,7 +17,7 @@ const PolicyDetails = () => {
         const data = await res.json();
 
         if (data.success) {
-            const found = data.data.find(p => p.policy_id == id); 
+            const found = data.data.find(p => p.policy_id == id);
             setPolicy(found);
         }
     };
@@ -31,7 +31,7 @@ const PolicyDetails = () => {
             </button>
 
             <h1>{policy.title}</h1>
- 
+
             <div
                 className="policy-full-description"
                 dangerouslySetInnerHTML={{ __html: policy.description }}
