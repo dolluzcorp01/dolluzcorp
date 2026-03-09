@@ -40,10 +40,7 @@ const UpdateDetails = () => {
 
             {update.images &&
                 update.images.split(",").map((item, i) => {
-                    const path = item.includes("::")
-                        ? item.split("::")[1]
-                        : item;
-
+                    const path = item.includes("::") ? item.split("::")[1] : item;
                     return (
                         <img
                             key={i}

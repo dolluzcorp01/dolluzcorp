@@ -1,23 +1,56 @@
+/* ─── POLICY DETAILS PAGE ───────────────────────────────────── */
 .policy-details-container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    background: var(--bg);
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    padding: 8px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-mid);
+    cursor: pointer;
+    margin-bottom: 32px;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: var(--cyan-light);
+    text-decoration: none;
 }
 
 .policy-details-container h1 {
-    font-size: 34px;
-    margin-bottom: 10px;
-}
-
-.policy-department {
-    font-size: 14px;
-    color: #64748b;
-    margin-bottom: 20px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(24px, 4vw, 34px);
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 24px;
 }
 
 .policy-full-description {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px;
+    border: 1.5px solid var(--border);
+    box-shadow: var(--card-shadow);
     line-height: 1.9;
-    font-size: 16px;
+    font-size: 15.5px;
+    color: var(--text-mid);
 }
 
 .policy-full-description p {
@@ -25,25 +58,16 @@
 }
 
 .policy-full-description ul {
-    padding-left: 20px;
+    padding-left: 22px;
     margin-bottom: 14px;
 }
 
-.back-btn {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    color: #2563eb;
-}
-
-.back-btn:hover {
-    text-decoration: underline;
+.policy-full-description li {
+    margin-bottom: 6px;
 }
 
 .policy-time {
-    margin-top: 30px;
+    margin-top: 24px;
     font-size: 13px;
-    color: #64748b;
+    color: var(--text-soft);
 }

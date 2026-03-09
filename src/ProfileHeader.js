@@ -147,10 +147,10 @@ const ProfileHeader = ({ loggedInEmp, setLoggedInEmp }) => {
                             </div>
 
                             <div>
-                                <strong style={{ color: "#fff" }}>
+                                <strong>
                                     {loggedInEmp?.emp_first_name} {loggedInEmp?.emp_last_name}
                                 </strong>
-                                <div style={{ fontSize: "12px", color: "#9ca3af", fontStyle: "italic" }}>
+                                <div style={{ fontSize: "11px", color: "var(--text-soft)", marginTop: 2 }}>
                                     Your Form, Your Space
                                 </div>
                             </div>
